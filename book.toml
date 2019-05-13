@@ -1,0 +1,11 @@
+[book]
+authors = []
+multilingual = false
+title = "Now is the Time"
+src = "src"
+
+[build]
+build-dir = "docs"
+create-missing = true
+
+[preprocessor.presentation-preprocessor]
