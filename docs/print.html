@@ -75,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html"><strong aria-hidden="true">4.4.</strong> Channels</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> User Defined Types</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -148,11 +148,13 @@
 <li><em>Systems</em> Programming Language</li>
 <li>Developed at Mozilla Research</li>
 <li>Compiled/No Runtime</li>
-<li>Promises of Speed, Safety and Concurrency</li>
+<li>Memory Safe</li>
+<li>No Data Races</li>
+<li>Concurrency First</li>
 </ul>
 <!--slides-only-end-->
 <!--web-only-->
-<p>For the uninitiated Rust is a <em>systems</em> programming language from Mozilla designed with the goal of parallelizing the browser and was <a href="https://hacks.mozilla.org/2017/08/inside-a-super-fast-css-engine-quantum-css-aka-stylo/">actually successful</a> in doing so. It is an attempt to balance the niceties of modern programming languages with the speed of C or C++. To achieve this, the output is fully compiled to machine code instead of an intermediate language which means it is compiled to machine code. While this means that programs need to be compiled for a specific system, the range of systems is extremely broad. Current <em>tier 1</em> targets include MacOS, Windows and Linux (all for i686 and x86_64), <em>tier 2</em> targets include almost any system you can think of. If all of that wasn't already impressive, it is also <em>memory safe</em> meaning we don't have to worry about our program's memory the compiler will guarantee we aren't doing anything dangerous. So now the big question is how?</p>
+<p>For the uninitiated Rust is a <em>systems</em> programming language from Mozilla designed with the goal of parallelizing the browser and was <a href="https://hacks.mozilla.org/2017/08/inside-a-super-fast-css-engine-quantum-css-aka-stylo/">actually successful</a> in doing so. It is an attempt to balance the niceties of modern programming languages with the speed of C or C++. To achieve this, the output is fully compiled to machine code instead of an intermediate language and while this means that programs need to be compiled for a specific system, the range of systems is extremely broad. Current <em>tier 1</em> targets include MacOS, Windows and Linux (all for i686 and x86_64), <em>tier 2</em> targets include almost any system you can think of. If all of that wasn't already impressive, it is also <em>memory safe</em> meaning we don't have to worry about our program's memory the compiler will guarantee we aren't doing anything dangerous. So now the big question is how?</p>
 <!--web-only-end-->
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
@@ -164,6 +166,7 @@
 <li>Mutability at the type level</li>
 <li>Ownership &amp; Borrowing</li>
 <li>Lifetimes</li>
+<li>No Nulls</li>
 </ul>
 <p><img id="voltron" src="./assets/img/voltron.jpg" height="400" alt="Voltron Assemble" style="display:none;margin-left: 10px;" /></p>
 <script>
@@ -200,55 +203,334 @@
 <!--web-only-->
 <p>The next thing to cover is how rust handles references. In some languages, the reference vs value is something the developer has almost no control over. In Rust, like in C or C++ the control of a reference vs value is explicitly provided by the developer. Consider the following</p>
 <!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#owned-data-can-loan-that-data-out" id="owned-data-can-loan-that-data-out"><h3>Owned data can loan that data out</h3></a>
+<p>This example borrows <code>0</code> as <code>y</code></p>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust"># fn main() {
-    let x = 0;
+    let x = String::from(&quot;ex&quot;);;
     let y = &amp;x;
     println!(&quot;x: {}, y: {}&quot;, x, y); 
 # }
 </code></pre></pre>
 <!--web-only-->
-<p>In the above, we have two variables, <code>x</code> and <code>y</code>, <code>x</code> owns the value 0 and <code>y</code> borrows the value of <code>x</code>. The console will print <code>x: 0, y: 0</code>. If we remove the <code>&amp;</code> from line 2 above, the compiler says no.</p>
+<p>In the above, we have two variables, <code>x</code> and <code>y</code>, <code>x</code> owns the value &quot;ex&quot; and <code>y</code> borrows the value of <code>x</code>. The console will print <code>x: 0, y: 0</code>. If we remove the <code>&amp;</code> from line 2 above, the compiler says no.</p>
 <!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#loaning-data-is-explicit" id="loaning-data-is-explicit"><h3>Loaning data is explicit</h3></a>
+<p>this example moves <code>String::from(&quot;ex&quot;)</code> into <code>y</code></p>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust"># fn main() {
-    let x = 0;
+    let x = String::from(&quot;ex&quot;);
     let y = x;
-    // The same twice!
     println!(&quot;x: {}, y: {}&quot;, x, y);
 # }
 </code></pre></pre>
 <!--web-only-->
-<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns 0 on line 1, then on line 2 we move 0 into <code>y</code> so at that point <code>y</code> owns 0, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know and that is any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
+<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns the String &quot;ex&quot; on line 1, then on line 2 we move it into <code>y</code> so at that point <code>y</code> owns 0, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
 <p>When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.
 $web-only-end</p>
+<!--slides-only-->
+<a class="header" href="#loaning-data-mutably" id="loaning-data-mutably"><h3>Loaning data mutably</h3></a>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust"># fn main() {
     let mut x = [0,1,2];
-    {
-        let y = &amp;mut x;
-        y[0] += 1;
-    }
+    let y = &amp;mut x;
+    y[0] += 1;
     // Updated!
     println!(&quot;x: {}&quot;, x[0]);
 # }
 </code></pre></pre>
 <!--web-only-->
-<p>As you can see we were able to manipulate x through our variable <code>y</code> as you would expect but why the extra curly braces? In the answer to that lies the second major rule of ownership and borrowing, the owner of any piece of data can lend out that data as many times as it would like, so long as the borrower can't modify the data. If the owner wants to lend out the data so the borrower can change it has to be exclusive. In the above example the extra curly braces create a new scope, <code>y</code> is borrowing <code>x</code> only until the end of that scope, which allows us to print part of <code>x</code>. If we tried it without that block the compiler would say no again.</p>
+<p>As you can see we were able to manipulate x through our variable <code>y</code> as you would expect. The one big caveat here lies in the second rule of ownership and borrowing: any data owner is allowed to share data immutably as many times as they'd like but there can only ever be 1 mutable reference at at time.</p>
 <!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#is-exclusive" id="is-exclusive"><h3>Is exclusive</h3></a>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust"># fn main() {
     let mut x = [0,1,2];
     let y = &amp;mut x;
+    let z = &amp;mut x;
     y[0] += 1;
+    z[2] += 1;
     // Nope!
     println!(&quot;x: {}&quot;, x[0]);
 # }
 </code></pre></pre>
 <!--web-only-->
-<p>In this example, the compiler is telling us that y has an exclusive borrow on x, so we can't loan it to <code>println</code> until <code>y</code> is done with it. With these two rules, we are able to guarantee that our programs will never have a data race which is a pretty powerful thing.</p>
+<p>In this example, the compiler is telling us that y has an exclusive borrow on x, so we can't loan it to <code>z</code> until <code>y</code> is done with it.</p>
 <!--web-only-end-->
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#lifetimes" id="lifetimes"><h1>Lifetimes</h1></a>
 <!--web-only-->
+<p>Now the big question is how does the compiler determine when a piece of data or reference is valid? To achieve this every data type must also have its lifetime defined. With owned data, we don't have to do anything special but for references there is an additional type parameter that might need to be provided. Let's take our first example from the last page and explicitly add this notation.</p>
 <!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#data-lives-a-finite-life" id="data-lives-a-finite-life"><h3>Data lives a finite life</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() { 
+    let x = 0;
+    let y = &amp;x;
+    println!(&quot;x: {}, y: {}&quot;, x, y);
+}
+</code></pre></pre>
+<!--web-only-->
+<p>Above is the same example from before, this time with some notation on where the two lifetimes start and end. lifetime <code>'b</code> begins at the start of the <code>main</code> function while lifetime <code>'a</code> starts when <code>y</code> borrows <code>x</code>; both of these lifetimes end at the bottom of <code>main</code>.</p>
+<p>In this example our lifetimes both fit nicely into the same package as lexical scope. Variables defined in a scope are only available in that scope or a child scope and variables cannot be accessed before they are declared. Rust's lifetimes are far more powerful than just the lexical scope, to expand on that let's look at this example.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#failing-type-inference" id="failing-type-inference"><h3>Failing type inference</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let s1 = &quot;🐕🐕🔔🔔🐕🔔🐕🔔🐕🔔🔔🐕🐕🐕&quot;;
+    let s2 = &quot;🐕🐕🔔🔔🔔🔔🔔🔔🐕🔔🐕🔔&quot;;
+    let trimmed = moar_cowbell(s1, s2);
+    println!(&quot;{}&quot;, trimmed);
+}
+
+fn moar_cowbell(s1: &amp;str, s2: &amp;str) -&gt; &amp;str {
+    let ct1 = s1.chars().fold(0, |acc, c| if c == '🔔' {
+        acc + 1
+    } else {
+        acc
+    });
+    let ct2 = s2.chars().fold(0, |acc, c| if c == '🔔' {
+        acc + 1
+    } else {
+        acc
+    });
+    if ct1 &gt; ct2 {
+        s1
+    } else {
+        s2
+    }
+}
+</code></pre></pre>
+<!--web-only-->
+<p>In this example, we have defined a function called <code>moar_cowbell</code> which takes two string references and returns the one that contains more bell emoji, unfortunately this will not compile. Rust is smart enough to figure out most lifetime requirements without them having to be explicitly defined, through type inference. This is a system where the compiler looks at all possible type annotations that could be applied and when there is only one, the developer doesn't have to provide one. Lifetimes are actually a kind of type definition, in this situation the lifetime of the return value could come from <code>s1</code> or it could come from <code>s2</code>, because there isn't just one, we will need to add a little more information.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#now-with-lifetime-annotations" id="now-with-lifetime-annotations"><h3>Now with lifetime annotations</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let s1 = &quot;🐕🐕🔔🔔🐕🔔🐕🔔🐕🔔🔔🐕🐕🐕&quot;;
+    let s2 = &quot;🐕🐕🔔🔔🔔🔔🔔🔔🐕🔔🐕🔔&quot;;
+    let trimmed = moar_cowbell(s1, s2);
+    println!(&quot;{}&quot;, trimmed);
+}
+
+fn moar_cowbell&lt;'a&gt;(s1: &amp;'a str, s2: &amp;'a str) -&gt; &amp;'a str {
+    let ct1 = s1.chars().fold(0, |acc, c| if c == '🔔' {
+        acc + 1
+    } else {
+        acc
+    });
+    let ct2 = s2.chars().fold(0, |acc, c| if c == '🔔' {
+        acc + 1
+    } else {
+        acc
+    });
+    if ct1 &gt; ct2 {
+        s1
+    } else {
+        s2
+    }
+}
+</code></pre></pre>
+<!--web-only-->
+<p>With this newly encoded lifetime information, the compiler now knows that <code>s1</code>, <code>s2</code> and the return value all need to live the same lifetime.</p>
+<p>Because each piece of data not only has a type but also a known lifetime that means we don't need to call <code>malloc/free</code> and also we don't need to have a runtime garbage collector, the rust compiler is able to just insert any allocation/deallocation you will need.</p>
+<p>This brings us to the next big win for Rust and that is Memory Safety, with the above scheme, you can never encounter a null pointer, perform a double free or leak memory due to a complicated object graph (I'm looking at you JavaScript).</p>
+<!--web-only-end-->
+<script type="text/javascript" src="assets/lifetimes.js"></script>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#no-null" id="no-null"><h1>No Null</h1></a>
+<!--web-only-->
+<p>The last piece in this puzzle is that no variable is allowed to be uninitialized, this means that there is no null pointer.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#not-allowed" id="not-allowed"><h4>Not allowed</h4></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+main() {
+    let x: usize;
+    println!(&quot;{}&quot;, x);
+}
+#}</code></pre></pre>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#so" id="so"><h1>So?</h1></a>
+<!--web-only-->
+<p>Let's review, because mutability is declarative, we can differentiate between mutable references and non-mutable references. Our borrowing rules require that only one place can mutate data at a time. Lifetimes ensure that our data is allocated and cleaned up correctly. Finally, no variable can ever be null. What does that all mean?</p>
+<ul>
+<li>Because we can only mutate data from one place, we can't have a data race.</li>
+<li>Because each piece of data not only has a type but also a known lifetime that means we don't need to call <code>malloc/free</code> and also we don't need to have a runtime garbage collector.</li>
+<li>Because no variable can be null we can't act on something that doesn't exist.</li>
+</ul>
+<p>This turns out to squash a ridiculous number of bugs.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<ul>
+<li>No data races</li>
+<li>Memory safe
+<ul>
+<li>No malloc/free</li>
+<li>No double free</li>
+<li>No memory leaks</li>
+<li>No reference cycles</li>
+<li>No garbage collector</li>
+</ul>
+</li>
+<li>Never null</li>
+</ul>
+<!--slides-only-end-->
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#why-now" id="why-now"><h1>Why Now?</h1></a>
+<!--web-only-->
+<p>If you have tried to learn rust in the past, you may have run into some friction around a few points. First is the old borrow checker, up until late last year the rust compiler could only use lexical scope to determine the life of any borrowed data, that meant we would have to jump through some hoops like this.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#non-lexical-lifetimes" id="non-lexical-lifetimes"><h3>Non-lexical lifetimes</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let mut x = 1;
+    {
+        inc(&amp;mut x);
+    }
+    println!(&quot;{}&quot;, x);
+}
+fn inc(&amp;mut x: usize) {
+    x += 1;
+}
+</code></pre></pre>
+<!--web-only-->
+<p>Previously the borrow checker wouldn't have been able to tell that <code>println!</code> would be able to safely print <code>x</code> because it was borrowed mutably by <code>inc</code> so we would put the mutable borrow in its own scope. Thankfully non-lexical lifetimes save us from this rigamarole.</p>
+<p>Next up is the ability to use the <code>dyn</code> and <code>impl</code> keyword to refer to data that conforms to a specific <code>trait</code> (rust's primary inheritance construct) in a far more convenient way. Previously it was not possible to use traits as return types unless they were first <code>Box</code>ed onto the heap, this lead to some extra run-time cost.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#dynimpl-trait" id="dynimpl-trait"><h3>dyn/impl trait</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">
+fn main() {
+    let boxed_fn = get_closure();
+    let raw_fn = get_closure_better();
+    println!(&quot;{}, {}&quot;, boxed_fn(10), raw_fn(7));
+}
+
+fn get_closure() -&gt; Box&lt;dyn Fn(usize) -&gt; usize&gt; {
+    Box::new(|x| x * x)
+}
+
+fn get_closure_better() -&gt; impl Fn(usize) -&gt; usize {
+    |x| x * x
+}
+</code></pre></pre>
+<!--web-only-->
+<p>While it might not seem like much, it is a pretty big performance win for this kind of code. Previously you would need to create a function pointer and allocate that function on the heap, this would lead to a v-table being crated and you could only call that function through the v-table now there is no heap allocation and also no v-table. Whoa... lots of jargon in that one, quickly and to the point it is a lot faster.</p>
+<p>Now for the kicker, async/await has just started to stabilize, this is a huge win! Previously, to perform some asynchronous operation you would either need to spin up a thread manually and then create a channel to communicate across those threads which is cumbersome at best.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#thread--channel" id="thread--channel"><h3>thread + channel</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">use std::{
+    thread::{
+        spawn,
+        sleep
+    },
+    sync::mpsc::{
+        channel,
+    },
+    time::Duration,
+};
+
+fn main() {
+    let (sender, receiver) = channel();
+    let s1 = sender.clone();
+    spawn(move || {
+        let s = s1;
+        for x in 0..10 {
+            s.send(Some(x as isize)).unwrap();
+            sleep(Duration::from_millis(100 * x));
+        }
+        s.send(None).unwrap();
+    });
+    let s2 = sender.clone();
+    spawn(move || {
+        sleep(Duration::from_millis(500));
+        let s = s2;
+        for y in (-10..0).rev() {
+            s.send(Some(y)).unwrap();
+            let sleep_inc = y.abs() as u64;
+            sleep(Duration::from_millis(100 * sleep_inc));
+        }
+        s.send(None).unwrap();
+    });
+    let mut done = 0;
+    while done &lt; 2 {
+        match receiver.recv() {
+            Ok(Some(m)) =&gt; println!(&quot;{}&quot;, m),
+            Ok(None) =&gt; done += 1,
+            _ =&gt; (),
+        }
+    }
+}
+</code></pre></pre>
+<!--web-only-->
+<p>The other option was to utilize this 3rd party library trait called <code>Future</code> the big problem here is that the type signature is so complicated that it is difficult to get everything right.</p>
+<!--web-only-end-->
+<!--slides-only-->
+<a class="header" href="#asyncawait" id="asyncawait"><h3>async/await</h3></a>
+<!--slides-only-end-->
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#other-niceties" id="other-niceties"><h1>Other Niceties</h1></a>
+<!--web-only-->
+<p>In addition to the guarantees made in the last slide, Rust also has a bunch of nice features.</p>
+<!--web-only-end-->
+<ul>
+<li>Arithmetic Data Types</li>
+<li>Pattern Matching</li>
+<li>Channels</li>
+<li>Macros</li>
+</ul>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#arithmetic-data-types" id="arithmetic-data-types"><h1>Arithmetic Data Types</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#pattern-matching" id="pattern-matching"><h1>Pattern Matching</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#traits" id="traits"><h1>Traits</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#channels" id="channels"><h1>Channels</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#macros" id="macros"><h1>Macros</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#getting-started" id="getting-started"><h1>Getting Started</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#rustup" id="rustup"><h1>Rustup</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#cargo" id="cargo"><h1>Cargo</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#bin-vs-lib" id="bin-vs-lib"><h1>Bin vs Lib</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#std-types" id="std-types"><h1>Std Types</h1></a>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#user-defined-types" id="user-defined-types"><h1>User Defined Types</h1></a>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script>
                     </main>
 

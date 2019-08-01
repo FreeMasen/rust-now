@@ -6,6 +6,7 @@ $web-only-end$
 - Mutability at the type level
 - Ownership & Borrowing
 - Lifetimes
+- No Nulls
 
 <img id="voltron" src="./assets/img/voltron.jpg" height="400" alt="Voltron Assemble" style="display:none;margin-left: 10px;" />
 <script>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Rust? - Now is the Time</title>
+        <title>Bin vs Lib - Now is the Time</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="chapter_1.html" class="active"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html"><strong aria-hidden="true">4.4.</strong> Channels</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> User Defined Types</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html"><strong aria-hidden="true">4.4.</strong> Channels</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html" class="active"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> User Defined Types</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -142,29 +142,20 @@
                     <main>
                         <style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
-<a class="header" href="#rust" id="rust"><h1>Rust?</h1></a>
-<!--slides-only-->
-<ul>
-<li><em>Systems</em> Programming Language</li>
-<li>Developed at Mozilla Research</li>
-<li>Compiled/No Runtime</li>
-<li>Memory Safe</li>
-<li>No Data Races</li>
-<li>Concurrency First</li>
-</ul>
-<!--slides-only-end-->
-<!--web-only-->
-<p>For the uninitiated Rust is a <em>systems</em> programming language from Mozilla designed with the goal of parallelizing the browser and was <a href="https://hacks.mozilla.org/2017/08/inside-a-super-fast-css-engine-quantum-css-aka-stylo/">actually successful</a> in doing so. It is an attempt to balance the niceties of modern programming languages with the speed of C or C++. To achieve this, the output is fully compiled to machine code instead of an intermediate language and while this means that programs need to be compiled for a specific system, the range of systems is extremely broad. Current <em>tier 1</em> targets include MacOS, Windows and Linux (all for i686 and x86_64), <em>tier 2</em> targets include almost any system you can think of. If all of that wasn't already impressive, it is also <em>memory safe</em> meaning we don't have to worry about our program's memory the compiler will guarantee we aren't doing anything dangerous. So now the big question is how?</p>
-<!--web-only-end-->
+<a class="header" href="#bin-vs-lib" id="bin-vs-lib"><h1>Bin vs Lib</h1></a>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
+                            <a rel="prev" href="chapter_5.2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
 
                         
-                            <a rel="next" href="chapter_2.0.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="chapter_5.4.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -176,9 +167,13 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
+                    <a href="chapter_5.2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
 
                 
-                    <a href="chapter_2.0.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="chapter_5.4.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
