@@ -75,7 +75,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html"><strong aria-hidden="true">4.4.</strong> Channels</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> User Defined Types</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html"><strong aria-hidden="true">4.4.</strong> Macros</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Tests</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> Resources</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -484,8 +484,148 @@ fn main() {
 <p>The other option was to utilize this 3rd party library trait called <code>Future</code> the big problem here is that the type signature is so complicated that it is difficult to get everything right.</p>
 <!--web-only-end-->
 <!--slides-only-->
+<a class="header" href="#futures" id="futures"><h3>Futures</h3></a>
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">use std::{
+    time::Duration,
+};
+
+#[macro_use]
+extern crate futures;
+use std::fmt;
+
+use futures::{
+    prelude::*,
+    Stream,
+};
+use tokio::timer::Interval;
+struct Counter {
+    end: isize,
+    idx: isize,
+    inc: bool,
+    interval: Interval,
+}
+impl Counter {
+    fn new(min: isize, max: isize) -&gt; Self {
+        Self {
+            end: max,
+            idx: min,
+            inc: min &lt; max,
+            interval: Interval::new_interval(Duration::from_millis(1)),
+        }
+    }
+}
+impl Stream for Counter {
+    type Item = isize;
+    type Error = ();
+    fn poll(&amp;mut self) -&gt; Poll&lt;Option&lt;Self::Item&gt;, Self::Error&gt; {
+        try_ready!(
+            self.interval.poll()
+                // The interval can fail if the Tokio runtime is unavailable.
+                // In this example, the error is ignored.
+                .map_err(|_| ())
+        );
+        let next_wait = self.idx.abs() as u64;
+        self.interval = Interval::new_interval(
+            Duration::from_millis(1 + next_wait * 100)
+        );
+        Ok(if self.inc {
+            if self.idx &lt; self.end {
+                self.idx += 1;
+                Async::Ready(Some(self.idx))
+            } else {
+                Async::Ready(None)
+            }
+        } else {
+            if self.idx &gt; self.end {
+                self.idx -= 1;
+                Async::Ready(Some(self.idx))
+            } else {
+                Async::Ready(None)
+            }
+        })
+    }
+}
+
+pub struct DisplayCt&lt;T&gt; {
+    stream: T,
+}
+
+impl&lt;T&gt; DisplayCt&lt;T&gt; {
+    fn new(stream: T) -&gt; DisplayCt&lt;T&gt; {
+        Self {
+            stream,
+        }
+    }
+}
+
+impl&lt;T&gt; Future for DisplayCt&lt;T&gt;
+where
+    T: Stream,
+    T::Item: fmt::Debug,
+{
+    type Item = ();
+    type Error = T::Error;
+
+    fn poll(&amp;mut self) -&gt; Poll&lt;(), Self::Error&gt; {
+        
+        loop {
+            let value = match try_ready!(self.stream.poll()) {
+                Some(value) =&gt; value,
+                None =&gt; break,
+            };
+
+            println!(&quot;{:?}&quot;, value);
+        }
+
+        Ok(Async::Ready(()))
+    }
+}
+fn main() {
+    let ct1 = Counter::new(0, 10).map_err(|e| eprintln!(&quot;{:?}&quot;, e));
+    let ct2 = Counter::new(0, -10).map_err(|e| eprintln!(&quot;{:?}&quot;, e));
+    let d1 = DisplayCt::new(ct1);
+    let d2 = DisplayCt::new(ct2);
+    let joined = d1.join(d2);
+    tokio::run(
+        joined.and_then(|_| Ok(()))
+    );
+}
+</code></pre></pre>
+<!--web-only-->
+<p>Just a short time ago, the <code>Future</code> trait was co-opted by the rust standard library, so that it could be coupled with the keywords async and await. Similar to how JavaScript co-opted the concept of Promises to work with its async/await syntax, rust will be able to abstract all the Future craziness into these keywords.</p>
+<p>It is anticipated to look something like this.</p>
+<!--web-only-end-->
+<!--slides-only-->
 <a class="header" href="#asyncawait" id="asyncawait"><h3>async/await</h3></a>
 <!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+let up = || {
+    for i in 0..10 {
+        println!(&quot;{}&quot;, i);
+        yield;
+    }
+    return;
+};
+let down = || {
+    for i in (-10..0).rev() {
+        println!(&quot;{}&quot;, i);
+        yield;
+    }
+    return;
+};
+let up_gen = from_generator(up);
+let down_gen = from_generator(down);
+up_gen.await;
+down_gen.await;
+#}</code></pre></pre>
+<!--web-only-->
+<p>Sadly, that last example wont run right now but the last major RFC for a true MVP was just slated for stabilization. Since rust runs on a 6 week release cycle, that means we are looking at fewer than 12 weeks before this is fully realized.</p>
+<p>Rust has been going through a huge ergonomic push to make life easier, things like non-lexical lifetimes have already made the learning curve ease up a bit. With async/await even much more advanced programs won't cause a developers head to explode.</p>
+<p>With that, let's take a quick glance at a few other features rust can boast about.</p>
+<!--web-only-end-->
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#other-niceties" id="other-niceties"><h1>Other Niceties</h1></a>
@@ -501,36 +641,369 @@ fn main() {
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#arithmetic-data-types" id="arithmetic-data-types"><h1>Arithmetic Data Types</h1></a>
+<!--web-only-->
+<p>While this feature might have a pretty intimidating name (I program so I don't need to do math), it is an extremely powerful tool. Sometimes referred to as <em>tagged unions</em> or <em>enums with associated data</em>, it is a way to explicitly define one datatype that might have a few different shapes. It looks something like this.</p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+enum Message {
+    Join(String),
+    Leave(String),
+    Nick(String, String),
+    Shout(String),
+    Whisper {from: String, to: String, msg: String}
+}
+#}</code></pre></pre>
+<!--web-only-->
+<p>The above is an example of all of the different messages a chat system might need. <code>Join</code> and <code>Leave</code> would contain the username for the user joining or leaving, <code>Nick</code> would allow a user to change their username by providing the current and new values, <code>Shout</code> is a message everyone can see while <code>Whisper</code> is a private message between two users.</p>
+<p>That in an of itself isn't very compelling but when you pair that with pattern matching, it becomes extremely useful. Let's fill out this example to include listing for messages.</p>
+<!--web-only-end-->
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#pattern-matching" id="pattern-matching"><h1>Pattern Matching</h1></a>
+<pre><pre class="playpen"><code class="language-rust">enum Message {
+    Join(String),
+    Leave(String),
+    Nick(String, String),
+    Shout { from: String, msg: String},
+    Whisper {from: String, to: String, msg: String},
+}
+fn main() {
+    let messages = vec![
+        Message::Join(String::from(&quot;person1&quot;)),
+        Message::Join(String::from(&quot;person2&quot;)),
+        Message::Join(String::from(&quot;person3&quot;)),
+        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
+        Message::Shout { 
+            from: String::from(&quot;JunkMaster3000&quot;), 
+            msg: String::from(&quot;All Hail JunkMaster!&quot;)
+        },
+        Message::Whisper {
+            from: String::from(&quot;person1&quot;),
+            to: String::from(&quot;person3&quot;),
+            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
+        },
+        Message::Whisper {
+            from: String::from(&quot;person3&quot;),
+            to: String::from(&quot;person1&quot;),
+            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
+        },
+        Message::Leave(String::from(&quot;person1&quot;)),
+    ];
+    for msg in messages {
+        match msg {
+            Message::Join(username) =&gt; {
+                println!(&quot;{} has joined the chat&quot;, username);
+            },
+            Message::Leave(username) =&gt; {
+                println!(&quot;{} has left the chat&quot;, username);
+            },
+            Message::Nick(from, to) =&gt; {
+                println!(&quot;{} has changed their username to {}&quot;, from, to);
+            },
+            Message::Shout { from, msg } =&gt; {
+                println!(&quot;{}: {}&quot;, from, msg);
+            },
+            Message::Whisper { from, to, msg } =&gt; {
+                println!(&quot;secret message for {} from {}:&quot;, to, from);
+                println!(&quot;    {}&quot;, msg);
+            }
+        }
+    }
+}
+</code></pre></pre>
+<!--web-only-->
+<p>The above is a naive example of how a chat program might run. We have our dummy message buffer in the variable <code>messages</code>. We loop over each <code>msg</code> in that collection and depending on what kind of message it is we print a different message to the console. The final key that makes this so powerful is that pattern matching is exhaustive, meaning if you added a new message type to the <code>Message</code> enum the compiler won't let you build the application until you have handled it.</p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">enum Message {
+    Join(String),
+    Leave(String),
+    Nick(String, String),
+    Shout { from: String, msg: String},
+    Whisper {from: String, to: String, msg: String},
+    Kick(String),
+}
+#fn main() {
+#    let messages = vec![
+#        Message::Join(String::from(&quot;person1&quot;)),
+#        Message::Join(String::from(&quot;person2&quot;)),
+#        Message::Join(String::from(&quot;person3&quot;)),
+#        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
+#        Message::Shout { 
+#            from: String::from(&quot;JunkMaster3000&quot;), 
+#            msg: String::from(&quot;All Hail JunkMaster!&quot;)
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person1&quot;),
+#            to: String::from(&quot;person3&quot;),
+#            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person3&quot;),
+#            to: String::from(&quot;person1&quot;),
+#            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
+#        },
+#        Message::Leave(String::from(&quot;person1&quot;)),
+#    ];
+#    for msg in messages {
+//....
+match msg {
+    Message::Join(username) =&gt; {
+        println!(&quot;{} has joined the chat&quot;, username);
+    },
+    Message::Leave(username) =&gt; {
+        println!(&quot;{} has left the chat&quot;, username);
+    },
+    Message::Nick(from, to) =&gt; {
+        println!(&quot;{} has changed their username to {}&quot;, from, to);
+    },
+    Message::Shout { from, msg } =&gt; {
+        println!(&quot;{}: {}&quot;, from, msg);
+    },
+    Message::Whisper { from, to, msg } =&gt; {
+        println!(&quot;secret message for {} from {}:&quot;, to, from);
+        println!(&quot;    {}&quot;, msg);
+    }
+}
+#    }
+#}
+</code></pre></pre>
+<!--web-only-->
+<p>This allows a developer to feel confident that something is going to just get lost. If you needed to add a catch all you can do that with the <code>_</code> case.</p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">#enum Message {
+#    Join(String),
+#    Leave(String),
+#    Nick(String, String),
+#    Shout { from: String, msg: String},
+#    Whisper {from: String, to: String, msg: String},
+#    Kick(String),
+#}
+#fn main() {
+#    let messages = vec![
+#        Message::Join(String::from(&quot;person1&quot;)),
+#        Message::Join(String::from(&quot;person2&quot;)),
+#        Message::Join(String::from(&quot;person3&quot;)),
+#        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
+#        Message::Shout { 
+#            from: String::from(&quot;JunkMaster3000&quot;), 
+#            msg: String::from(&quot;All Hail JunkMaster!&quot;)
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person1&quot;),
+#            to: String::from(&quot;person1&quot;),
+#            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person3&quot;),
+#            to: String::from(&quot;person1&quot;),
+#            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
+#        },
+#        Message::Leave(String::from(&quot;person1&quot;)),
+#    ];
+#    for msg in messages {
+//...
+match msg {
+    Message::Join(username) =&gt; {
+        println!(&quot;{} has joined the chat&quot;, username);
+    },
+    Message::Leave(username) =&gt; {
+        println!(&quot;{} has left the chat&quot;, username);
+    },
+    Message::Nick(from, to) =&gt; {
+        println!(&quot;{} has changed their username to {}&quot;, from, to);
+    },
+    Message::Shout { from, msg } =&gt; {
+        println!(&quot;{}: {}&quot;, from, msg);
+    },
+    Message::Whisper { from, to, msg } =&gt; {
+        println!(&quot;secret message for {} from {}:&quot;, to, from);
+        println!(&quot;    {}&quot;, msg);
+    },
+    _ =&gt; println!(&quot;Unknown message&quot;),
+}
+#    }
+#}
+</code></pre></pre>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#traits" id="traits"><h1>Traits</h1></a>
-<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
-</style>
-<a class="header" href="#channels" id="channels"><h1>Channels</h1></a>
+<!--web-only-->
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">#use std::fmt::{
+#    Formatter,
+#    Result,
+#    Display,
+#};
+#enum Message {
+#    Join(String),
+#    Leave(String),
+#    Nick(String, String),
+#    Shout { from: String, msg: String},
+#    Whisper {from: String, to: String, msg: String},
+#    Kick(String),
+#}
+impl Display for Message {
+    fn fmt(&amp;self, f: &amp;mut Formatter) -&gt; Result {
+        match self {
+            Message::Join(username) =&gt; {
+                write!(f, &quot;👋 {} has joined the chat&quot;, username)
+            },
+            Message::Leave(username) =&gt; {
+                write!(f, &quot;😢 {} has left the chat&quot;, username)
+            },
+            Message::Nick(from, to) =&gt; {
+                write!(f, &quot;😎 {} has changed their username to {}&quot;, from, to)
+            },
+            Message::Shout { from, msg } =&gt; {
+                write!(f, &quot;😃 {}: {}&quot;, from, msg)
+            },
+            Message::Whisper { from, to, msg } =&gt; {
+                write!(f, &quot;🐱‍👤 secret message for {} from {}:\n    {}&quot;, to, from, msg)
+            },
+            Message::Kick(who) =&gt; {
+                write!(f, &quot;👢 user {} has been kicked from the channel&quot;, who)
+            },
+        }
+    }
+}
+fn main() {
+    #    let messages = vec![
+#        Message::Join(String::from(&quot;person1&quot;)),
+#        Message::Join(String::from(&quot;person2&quot;)),
+#        Message::Join(String::from(&quot;person3&quot;)),
+#        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
+#        Message::Shout { 
+#            from: String::from(&quot;JunkMaster3000&quot;), 
+#            msg: String::from(&quot;All Hail JunkMaster!&quot;)
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person1&quot;),
+#            to: String::from(&quot;person3&quot;),
+#            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person3&quot;),
+#            to: String::from(&quot;person1&quot;),
+#            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
+#        },
+#        Message::Leave(String::from(&quot;person1&quot;)),
+#    ];
+    //...
+    for msg in messages {
+        println!(&quot;{}&quot;, msg);
+    }
+}
+</code></pre></pre>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#macros" id="macros"><h1>Macros</h1></a>
+<!--web-only-->
+<!--web-only-end-->
+<!--slides-only-->
+<!--slides-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    println!(&quot;I'm a macro&quot;);
+    println!(&quot;I'm from a custom derive: {:?}&quot;, Thing);
+    println!(&quot;I'm from a an attribute macro: {}&quot;, say_hi());
+}
+#[derive(Debug)]
+struct Thing;
+
+#[inline]
+fn say_hi() -&gt; &amp;'static str {
+    &quot;Hello world!&quot;
+}
+</code></pre></pre>
+<script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
+</style>
+<a class="header" href="#tests" id="tests"><h1>Tests</h1></a>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#getting-started" id="getting-started"><h1>Getting Started</h1></a>
+<ul>
+<li>Rustup</li>
+<li>Cargo</li>
+<li>Project Types</li>
+<li>The Standard Library</li>
+</ul>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#rustup" id="rustup"><h1>Rustup</h1></a>
+<a class="header" href="#environment-manager-for-rust" id="environment-manager-for-rust"><h2>Environment manager for rust</h2></a>
+<a class="header" href="#macoslinux" id="macoslinux"><h3>Macos/Linux</h3></a>
+<pre><code class="language-sh">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<a class="header" href="#windows" id="windows"><h3>Windows</h3></a>
+<ol>
+<li>Go to <a href="https://rustup.rs/">https://rustup.rs/</a></li>
+<li>Download and install rustup-init.exe</li>
+</ol>
+<!--slides-only-->
+<a class="header" href="#contents" id="contents"><h2>Contents</h2></a>
+<ol>
+<li>Rustup</li>
+<li>Cargo</li>
+<li>Rustc</li>
+</ol>
+<!--slides-only-end-->
+<a class="header" href="#confirm-your-install" id="confirm-your-install"><h2>Confirm your install</h2></a>
+<pre><code class="language-sh">rustc --version
+cargo --version
+rustup --version
+</code></pre>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#cargo" id="cargo"><h1>Cargo</h1></a>
+<p>The package manager and test runner and binary installer and build pipeline runner for most rust programs.</p>
+<ul>
+<li><code>cargo new</code></li>
+<li><code>cargo init</code></li>
+<li><code>cargo test</code></li>
+<li><code>cargo run</code></li>
+<li><code>cargo check</code></li>
+<li><code>cargo install mdbook</code></li>
+</ul>
+<p><a href="https://crates.io">Crates.io</a></p>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#bin-vs-lib" id="bin-vs-lib"><h1>Bin vs Lib</h1></a>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
 <a class="header" href="#std-types" id="std-types"><h1>Std Types</h1></a>
+<a class="header" href="#string-vs-str" id="string-vs-str"><h2><code>String</code> vs <code>&amp;str</code></h2></a>
+<a class="header" href="#vect-vs-t-n" id="vect-vs-t-n"><h2><code>Vec&lt;T&gt;</code> vs <code>[T; N]</code></h2></a>
+<a class="header" href="#boxt" id="boxt"><h2><code>Box&lt;T&gt;</code></h2></a>
+<a class="header" href="#numbers" id="numbers"><h2>Numbers</h2></a>
+<ul>
+<li><code>u8</code></li>
+<li><code>i8</code></li>
+<li><code>u16</code></li>
+<li><code>i16</code></li>
+<li><code>u32</code></li>
+<li><code>i32</code></li>
+<li><code>f32</code></li>
+<li><code>u64</code></li>
+<li><code>i64</code></li>
+<li><code>f64</code></li>
+<li><code>u128</code></li>
+<li><code>i128</code></li>
+<li><code>usize</code></li>
+<li><code>isize</code></li>
+</ul>
+<a class="header" href="#tuples" id="tuples"><h2>Tuples</h2></a>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script><style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
-<a class="header" href="#user-defined-types" id="user-defined-types"><h1>User Defined Types</h1></a>
+<a class="header" href="#resources" id="resources"><h1>Resources</h1></a>
+<ul>
+<li><a href="https://doc.rust-lang.org/book/"><em>The</em> Book</a></li>
+<li><a href="https://doc.rust-lang.org/std/index.html">std documentation</a></li>
+<li><a href="https://github.com/rust-lang/rustlings/">rustlings</a></li>
+<li><a href="https://docs.rs">docs.rs</a></li>
+<li><a href="https://doc.rust-lang.org/stable/rust-by-example/">Rust By Example</a></li>
+<li><a href="https://newrustacean.com/">New Rustacean</a></li>
+</ul>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script>
                     </main>
 

@@ -102,7 +102,149 @@ The other option was to utilize this 3rd party library trait called `Future` the
 $web-only-end$
 
 $slides-only$
+### Futures
+$slides-only-end$
+
+```rust
+use std::{
+    time::Duration,
+};
+
+#[macro_use]
+extern crate futures;
+use std::fmt;
+
+use futures::{
+    prelude::*,
+    Stream,
+};
+use tokio::timer::Interval;
+struct Counter {
+    end: isize,
+    idx: isize,
+    inc: bool,
+    interval: Interval,
+}
+impl Counter {
+    fn new(min: isize, max: isize) -> Self {
+        Self {
+            end: max,
+            idx: min,
+            inc: min < max,
+            interval: Interval::new_interval(Duration::from_millis(1)),
+        }
+    }
+}
+impl Stream for Counter {
+    type Item = isize;
+    type Error = ();
+    fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
+        try_ready!(
+            self.interval.poll()
+                // The interval can fail if the Tokio runtime is unavailable.
+                // In this example, the error is ignored.
+                .map_err(|_| ())
+        );
+        let next_wait = self.idx.abs() as u64;
+        self.interval = Interval::new_interval(
+            Duration::from_millis(1 + next_wait * 100)
+        );
+        Ok(if self.inc {
+            if self.idx < self.end {
+                self.idx += 1;
+                Async::Ready(Some(self.idx))
+            } else {
+                Async::Ready(None)
+            }
+        } else {
+            if self.idx > self.end {
+                self.idx -= 1;
+                Async::Ready(Some(self.idx))
+            } else {
+                Async::Ready(None)
+            }
+        })
+    }
+}
+
+pub struct DisplayCt<T> {
+    stream: T,
+}
+
+impl<T> DisplayCt<T> {
+    fn new(stream: T) -> DisplayCt<T> {
+        Self {
+            stream,
+        }
+    }
+}
+
+impl<T> Future for DisplayCt<T>
+where
+    T: Stream,
+    T::Item: fmt::Debug,
+{
+    type Item = ();
+    type Error = T::Error;
+
+    fn poll(&mut self) -> Poll<(), Self::Error> {
+        
+        loop {
+            let value = match try_ready!(self.stream.poll()) {
+                Some(value) => value,
+                None => break,
+            };
+
+            println!("{:?}", value);
+        }
+
+        Ok(Async::Ready(()))
+    }
+}
+fn main() {
+    let ct1 = Counter::new(0, 10).map_err(|e| eprintln!("{:?}", e));
+    let ct2 = Counter::new(0, -10).map_err(|e| eprintln!("{:?}", e));
+    let d1 = DisplayCt::new(ct1);
+    let d2 = DisplayCt::new(ct2);
+    let joined = d1.join(d2);
+    tokio::run(
+        joined.and_then(|_| Ok(()))
+    );
+}
+```
+$web-only$
+Just a short time ago, the `Future` trait was co-opted by the rust standard library, so that it could be coupled with the keywords async and await. Similar to how JavaScript co-opted the concept of Promises to work with its async/await syntax, rust will be able to abstract all the Future craziness into these keywords.
+
+It is anticipated to look something like this.
+$web-only-end$
+$slides-only$
 ### async/await
 $slides-only-end$
 
+```rust
+let up = || {
+    for i in 0..10 {
+        println!("{}", i);
+        yield;
+    }
+    return;
+};
+let down = || {
+    for i in (-10..0).rev() {
+        println!("{}", i);
+        yield;
+    }
+    return;
+};
+let up_gen = from_generator(up);
+let down_gen = from_generator(down);
+up_gen.await;
+down_gen.await;
+```
+$web-only$
+Sadly, that last example wont run right now but the last major RFC for a true MVP was just slated for stabilization. Since rust runs on a 6 week release cycle, that means we are looking at fewer than 12 weeks before this is fully realized.
 
+Rust has been going through a huge ergonomic push to make life easier, things like non-lexical lifetimes have already made the learning curve ease up a bit. With async/await even much more advanced programs won't cause a developers head to explode.
+
+With that, let's take a quick glance at a few other features rust can boast about.
+$web-only-end$
