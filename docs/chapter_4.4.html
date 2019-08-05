@@ -3,7 +3,9 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Macros - Now is the Time</title>
+        <title>Traits - Now is the Time</title>
+        
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,7 +58,7 @@
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
             var theme;
-            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             document.body.className = theme;
             document.querySelector('html').className = theme + ' js';
@@ -75,7 +77,10 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Traits</a></li><li><a href="chapter_4.4.html" class="active"><strong aria-hidden="true">4.4.</strong> Macros</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Tests</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> Resources</a></li></ol></li></ol>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> User Defined Types</a></li><li><a href="chapter_4.4.html" class="active"><strong aria-hidden="true">4.4.</strong> Traits</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li><li><a href="chapter_4.6.html"><strong aria-hidden="true">4.6.</strong> Tests</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> Resources</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -105,7 +110,7 @@
                             
                         </div>
 
-                        <h1 class="menu-title">Now is the Time</h1> 
+                        <h1 class="menu-title">Now is the Time</h1>
 
                         <div class="right-buttons">
                             <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -142,24 +147,91 @@
                     <main>
                         <style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
-<a class="header" href="#macros" id="macros"><h1>Macros</h1></a>
+<h1><a class="header" href="#traits" id="traits">Traits</a></h1>
 <!--web-only-->
 <!--web-only-end-->
-<!--slides-only-->
-<!--slides-only-end-->
-<pre><pre class="playpen"><code class="language-rust">fn main() {
-    println!(&quot;I'm a macro&quot;);
-    println!(&quot;I'm from a custom derive: {:?}&quot;, Thing);
-    println!(&quot;I'm from a an attribute macro: {}&quot;, say_hi());
+<pre><pre class="playpen"><code class="language-rust">#use std::fmt::{
+#    Formatter,
+#    Result,
+#    Display,
+#};
+#enum Message {
+#    Join(String),
+#    Leave(String),
+#    Nick(String, String),
+#    Shout { from: String, msg: String},
+#    Whisper {from: String, to: String, msg: String},
+#    Kick(String),
+#}
+impl Display for Message {
+    fn fmt(&amp;self, f: &amp;mut Formatter) -&gt; Result {
+        match self {
+            Message::Join(username) =&gt; {
+                write!(f, &quot;👋 {} has joined the chat&quot;, username)
+            },
+            Message::Leave(username) =&gt; {
+                write!(f, &quot;😢 {} has left the chat&quot;, username)
+            },
+            Message::Nick(from, to) =&gt; {
+                write!(f, &quot;😎 {} has changed their username to {}&quot;, from, to)
+            },
+            Message::Shout { from, msg } =&gt; {
+                write!(f, &quot;😃 {}: {}&quot;, from, msg)
+            },
+            Message::Whisper { from, to, msg } =&gt; {
+                write!(f, &quot;🐱‍👤 secret message for {} from {}:\n    {}&quot;, to, from, msg)
+            },
+            Message::Kick(who) =&gt; {
+                write!(f, &quot;👢 user {} has been kicked from the channel&quot;, who)
+            },
+        }
+    }
 }
-#[derive(Debug)]
-struct Thing;
-
-#[inline]
-fn say_hi() -&gt; &amp;'static str {
-    &quot;Hello world!&quot;
+fn main() {
+    #    let messages = vec![
+#        Message::Join(String::from(&quot;person1&quot;)),
+#        Message::Join(String::from(&quot;person2&quot;)),
+#        Message::Join(String::from(&quot;person3&quot;)),
+#        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
+#        Message::Shout { 
+#            from: String::from(&quot;JunkMaster3000&quot;), 
+#            msg: String::from(&quot;All Hail JunkMaster!&quot;)
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person1&quot;),
+#            to: String::from(&quot;person3&quot;),
+#            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
+#        },
+#        Message::Whisper {
+#            from: String::from(&quot;person3&quot;),
+#            to: String::from(&quot;person1&quot;),
+#            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
+#        },
+#        Message::Leave(String::from(&quot;person1&quot;)),
+#    ];
+    //...
+    for msg in messages {
+        println!(&quot;{}&quot;, msg);
+    }
 }
 </code></pre></pre>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub trait Firstable&lt;T&gt; {
+    fn first(&amp;self) -&gt; &amp;T;
+}
+impl&lt;T&gt; Firstable&lt;T&gt; for Vec&lt;T&gt; {
+    fn first(&amp;self) -&gt; &amp;T {
+        &amp;self[0]
+    }
+}
+impl&lt;T&gt; Firstable&lt;T&gt; for &amp;[T] {
+    fn first(&amp;self) -&gt; &amp;T {
+        &amp;self[0]
+    }
+}
+#}</code></pre></pre>
 <script>var PresentationMode;!function(e){e[e.Slides=0]="Slides",e[e.Web=1]="Web"}(PresentationMode||(PresentationMode={}));var PresentationModeHider=function(){function e(){var t=this;(this.queryKey="presentation_mode",this.webClass="article-content",this.preClass="presentation-only",this.mode=this.getMode(),this.setMode(),this.assignClassesViaComments(),this.mode!==PresentationMode.Slides||""!==location.pathname&&"/"!==location.pathname)||document.querySelector(".sidebar > .chapter").firstChild.firstChild.click();window.addEventListener("keyup",function(e){e.altKey&&("p"!=e.key&&"P"!=e.key&&"KeyP"!=e.code||t.toggle())})}return e.prototype.assignClassesViaComments=function(){for(var e,t=document.createNodeIterator(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_COMMENT,null),n=this.mode===PresentationMode.Web?"not-presenting":"presenting",o=null;e=t.nextNode();)if(8===e.nodeType){var s=e.nodeValue.trim();o="web-only"===s?this.webClass:"slides-only"===s?this.preClass:null}else 1===e.nodeType&&null!==o&&e.classList.add(o,n)},e.prototype.getMode=function(){var t=localStorage.getItem(this.queryKey);if(null===t)return PresentationMode.Web;try{var e=parseInt(t);return 1<e||e<0?(console.error("presentation_mode was out of range",e),PresentationMode.Web):e}catch(e){return console.error("presentation_mode present in localStorage but value is not an integer",t,e),PresentationMode.Web}},e.prototype.setMode=function(){localStorage.setItem(this.queryKey,this.mode.toString())},e.prototype.updatePage=function(){this.updateElements(document.querySelectorAll(".presentation-only")),this.updateElements(document.querySelectorAll(".article-content"))},e.prototype.updateElements=function(e){for(var t=0;t<e.length;t++){var n=e[t];this.mode===PresentationMode.Slides?n.classList.replace("not-presenting","presenting"):n.classList.replace("presenting","not-presenting")}},e.prototype.toggle=function(){switch(this.mode){case PresentationMode.Slides:this.mode=PresentationMode.Web;break;case PresentationMode.Web:this.mode=PresentationMode.Slides}this.setMode(),this.updatePage()},e}(),___presentationModeHider=new PresentationModeHider;</script>
                     </main>
 

@@ -6,7 +6,7 @@ $slides-only$
 - Compiled/No Runtime
 - Memory Safe
 - No Data Races
-- Concurrency First
+- _Safe_ Concurrency First
 $slides-only-end$
 
 $web-only$

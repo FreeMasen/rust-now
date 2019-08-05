@@ -15,6 +15,6 @@ $web-only-end$
         if (!v) return console.error('no voltron image found');
         setTimeout(() => {
             v.style.display = 'block'
-        }, 2000);
+        }, 5000);
     })();
 </script>
