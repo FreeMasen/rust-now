@@ -8,17 +8,15 @@ $slides-only-end$
 ```rust
 fn main() {
     let mut x = 1;
+    let y = &mut x;
     {
-        inc(&mut x);
+       *y += 1;
     }
     println!("{}", x);
 }
-fn inc(&mut x: usize) {
-    x += 1;
-}
 ```
 $web-only$
-Previously the borrow checker wouldn't have been able to tell that `println!` would be able to safely print `x` because it was borrowed mutably by `inc` so we would put the mutable borrow in its own scope. Thankfully non-lexical lifetimes save us from this rigamarole.
+Previously the borrow checker wouldn't have been able to tell that `println!` would be able to safely print `x` because it was borrowed mutably by `y` so we would put the mutable borrow in its own scope. Thankfully non-lexical lifetimes save us from this rigamarole.
 
 Next up is the ability to use the `dyn` and `impl` keyword to refer to data that conforms to a specific `trait` (rust's primary inheritance construct) in a far more convenient way. Previously it was not possible to use traits as return types unless they were first `Box`ed onto the heap, this lead to some extra run-time cost. 
 $web-only-end$

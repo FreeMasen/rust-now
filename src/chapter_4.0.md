@@ -1,7 +1,7 @@
 # Other Niceties
 
 $web-only$
-In addition to the guarantees made in the last slide, Rust also has a bunch of nice features. 
+In addition to the new stuff in the last slide, Rust has a bunch of other nice features. 
 $web-only-end$
 
 - Arithmetic Data Types

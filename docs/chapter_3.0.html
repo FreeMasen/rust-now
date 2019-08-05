@@ -156,17 +156,15 @@
 <!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust">fn main() {
     let mut x = 1;
+    let y = &amp;mut x;
     {
-        inc(&amp;mut x);
+       *y += 1;
     }
     println!(&quot;{}&quot;, x);
 }
-fn inc(&amp;mut x: usize) {
-    x += 1;
-}
 </code></pre></pre>
 <!--web-only-->
-<p>Previously the borrow checker wouldn't have been able to tell that <code>println!</code> would be able to safely print <code>x</code> because it was borrowed mutably by <code>inc</code> so we would put the mutable borrow in its own scope. Thankfully non-lexical lifetimes save us from this rigamarole.</p>
+<p>Previously the borrow checker wouldn't have been able to tell that <code>println!</code> would be able to safely print <code>x</code> because it was borrowed mutably by <code>y</code> so we would put the mutable borrow in its own scope. Thankfully non-lexical lifetimes save us from this rigamarole.</p>
 <p>Next up is the ability to use the <code>dyn</code> and <code>impl</code> keyword to refer to data that conforms to a specific <code>trait</code> (rust's primary inheritance construct) in a far more convenient way. Previously it was not possible to use traits as return types unless they were first <code>Box</code>ed onto the heap, this lead to some extra run-time cost. </p>
 <!--web-only-end-->
 <!--slides-only-->
