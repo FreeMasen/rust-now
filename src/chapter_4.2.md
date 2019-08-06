@@ -57,6 +57,9 @@ $web-only$
 The above is a naive example of how a chat program might run. We have our dummy message buffer in the variable `messages`. We loop over each `msg` in that collection and depending on what kind of message it is we print a different message to the console. The final key that makes this so powerful is that pattern matching is exhaustive, meaning if you added a new message type to the `Message` enum the compiler won't let you build the application until you have handled it.
 $web-only-end$
 
+$slides-only$
+### Pattern Matching is Exhaustive
+$slides-only-end$
 ```rust
 enum Message {
     Join(String),
@@ -116,7 +119,9 @@ $web-only$
 This allows a developer to feel confident that something is going to just get lost. If you needed to add a catch all you can do that with the `_` case.
 $web-only-end$
 
-
+$slides-only$
+### Wildcard Matches
+$slides-only-end$
 ```rust
 #enum Message {
 #    Join(String),

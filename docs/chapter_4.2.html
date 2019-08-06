@@ -202,6 +202,9 @@ fn main() {
 <!--web-only-->
 <p>The above is a naive example of how a chat program might run. We have our dummy message buffer in the variable <code>messages</code>. We loop over each <code>msg</code> in that collection and depending on what kind of message it is we print a different message to the console. The final key that makes this so powerful is that pattern matching is exhaustive, meaning if you added a new message type to the <code>Message</code> enum the compiler won't let you build the application until you have handled it.</p>
 <!--web-only-end-->
+<!--slides-only-->
+<h3><a class="header" href="#pattern-matching-is-exhaustive" id="pattern-matching-is-exhaustive">Pattern Matching is Exhaustive</a></h3>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust">enum Message {
     Join(String),
     Leave(String),
@@ -258,6 +261,9 @@ match msg {
 <!--web-only-->
 <p>This allows a developer to feel confident that something is going to just get lost. If you needed to add a catch all you can do that with the <code>_</code> case.</p>
 <!--web-only-end-->
+<!--slides-only-->
+<h3><a class="header" href="#wildcard-matches" id="wildcard-matches">Wildcard Matches</a></h3>
+<!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust">#enum Message {
 #    Join(String),
 #    Leave(String),
@@ -367,6 +373,8 @@ match msg {
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        
+        <script type="text/javascript" src="counter.js"></script>
         
 
         

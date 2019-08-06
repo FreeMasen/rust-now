@@ -2,6 +2,9 @@
 $web-only$
 
 $web-only-end$
+$slides-only$
+### Implement other traits for your type
+$slides-only-end$
 ```rust
 #use std::fmt::{
 #    Formatter,
@@ -69,7 +72,9 @@ fn main() {
 }
 ```
 
-
+$slides-only$
+### Implement your traits for other types
+$slides-only-end$
 ```rust
 pub trait Firstable<T> {
     fn first(&self) -> &T;

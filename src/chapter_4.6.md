@@ -4,7 +4,7 @@ $web-only$
 
 $web-only-end$
 $slides-only$
-
+### Syntax extensions and More
 $slides-only-end$
 ```rust
 fn main() {

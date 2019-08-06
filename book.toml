@@ -3,6 +3,10 @@ authors = []
 multilingual = false
 title = "Now is the Time"
 src = "src"
+[output.html]
+additional-js = [
+    "counter.js"
+]
 
 [build]
 build-dir = "docs"
