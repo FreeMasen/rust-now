@@ -90,3 +90,11 @@ impl<T> Firstable<T> for &[T] {
     }
 }
 ```
+
+$notes$
+Traits
+- Primary method of shared behavior
+- methods only
+- can impl YOUR traits for OTHER's types
+- can impl OTHER's traits for YOUR types
+$notes-end$

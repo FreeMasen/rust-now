@@ -20,3 +20,18 @@ $slides-only$
   * No garbage collector
 * Never null
 $slides-only-end$
+
+$notes$
+- No data races
+  - You can't share references across threads if any of them will be mutated
+  - To do so you can use something like a mutex or Atomic data structure
+- Memory Safe
+  - No manual management
+  - No memory leaks
+  - No garbage collector errors
+    - Refernce cycles
+    - Complicated Object Graphs (JS)
+  - No null pointer error
+- This offloads a lot of possible runtime errors to compile time
+  - which is a win
+$notes-end$

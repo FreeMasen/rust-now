@@ -23,3 +23,11 @@ fn could_fail(n: u8) -> Result<(), String> {
 }
 
 ```
+
+$notes$
+Error Handling
+- Enums + Pattern matching = beautiful error handling
+- ? operator short circuts
+- pattern matching on Ok vs Err
+- warning when unused
+$notes-end$

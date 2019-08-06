@@ -17,3 +17,12 @@ The above is an example of all of the different messages a chat system might nee
 
 That in an of itself isn't very compelling but when you pair that with pattern matching, it becomes extremely useful. Let's fill out this example to include listing for messages.
 $web-only-end$
+
+
+$notes$
+- Arithmetic Data Types
+    - Tagged Unions
+    - Enums with Associated Data
+- Another feature picked from functional languages
+- A huge win for explicit dynamism
+$notes-end$

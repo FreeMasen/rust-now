@@ -19,3 +19,11 @@ $web-only-end$
     println!("HAHA Success {}", x);
 # }
 ```
+
+$notes$
+- Could be familiar for Functional Programmers
+- Example 1 will not compile
+  - x is not declared as mutable
+- Example 2 will compile
+  - x is declared as mutable
+$notes-end$

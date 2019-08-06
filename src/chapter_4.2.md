@@ -177,3 +177,15 @@ match msg {
 #    }
 #}
 ```
+
+$notes$
+Pattern Matching
+- What really makes Rust enums powerful
+- Example 1
+  - Extract data in your switch
+- Example 2
+  - Compile error when you miss one
+  - No one can pull the rug out from under you!
+- Example 3
+  - wildcard matching for ignoring exhaustiveness
+$notes-end$

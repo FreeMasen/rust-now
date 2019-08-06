@@ -11,3 +11,13 @@ $web-only-end$
 - Traits
 - Robust Macros
 - Built in testing framework
+
+$notes$
+- Arithmetic Data Types
+- Pattern Matching
+- Error Handling
+- User Defined Types
+- Traits
+- Robust Macros
+- Built in testing framework
+$notes-end$

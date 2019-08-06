@@ -1,5 +1,5 @@
-let end;
-let sequence = [];
+var end;
+
 window.addEventListener('keyup', ev => {
     if (ev.altKey && ev.key === 'g') {
         start();
@@ -36,15 +36,7 @@ function update(mins, secs) {
     let counter = getCounterEl();
     let s = `0${secs}`.substr(-2);
     counter.innerHTML = `${mins}:${s}`;
-    if (mins < 10) {
-        counter.style.borderColor = 'red';
-    } else if (mins < 20) {
-        counter.style.borderColor = 'rgba(255,0,0,0.5)';
-    } else if (mins < 30) {
-        counter.style.borderColor = 'orange';
-    } else if (mins < 40) {
-        counter.style.borderColor = 'black';
-    }
+    counter.style.borderColor = getColor(mins * 60 + secs);
 }
 
 function getCounterEl() {
@@ -55,10 +47,11 @@ function getCounterEl() {
     counter = document.createElement('div');
     counter.style.position = 'absolute';
     counter.style.left = 'calc(100% - 10px)';
-    counter.style.top = '50px';
+    counter.style.top = '55px';
     counter.style.width = '50px';
     counter.style.textAlign = 'right';
     counter.style.border = '2px solid grey';
+    counter.style.borderRadius = '5px';
     counter.setAttribute('id', 'counter');
     counter.addEventListener('mouseenter', () => {
         counter.style.left = 'calc(100% - 50px)';
@@ -71,3 +64,20 @@ function getCounterEl() {
     document.body.appendChild(counter);
     return counter;
 }
+
+function getColor(seconds) {
+    const total = 45 * 60;
+    const percent = seconds / total;
+    const inverse = 1 - percent;
+    let red = 0;
+    let green = 0;
+    if (inverse < 0.5) {
+        red = green = (inverse * 255) * 2;
+    } else {
+        red = 255;
+        green = 255 * (percent * 2);
+    }
+    let ret = `rgb(${red.toFixed(2)}, ${green.toFixed(2)}, 0)`;
+    return ret;
+}
+

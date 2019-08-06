@@ -14,6 +14,15 @@ fn main() {
     println!("x: {}, y: {}", x, y);
 }
 ```
+$notes$
+Example 1
+- Blue ('b) line is the lifetime for all of main
+- x lives for all of 'b
+- Red ('a) is the lifetime of y
+  - y is a reference to x
+  - 'a cannot outlive 'b, ever
+- Both 'a and 'b end at the end of main
+$notes-end$
 
 $web-only$
 Above is the same example from before, this time with some notation on where the two lifetimes start and end. lifetime `'b` begins at the start of the `main` function while lifetime `'a` starts when `y` borrows `x`; both of these lifetimes end at the bottom of `main`. 
@@ -51,6 +60,15 @@ fn moar_cowbell(s1: &str, s2: &str) -> &str {
 }
 ```
 
+$notes$
+Example 2
+- Failing Example
+- The compiler cannot detect the lifetime of the return &str
+- It must be tied to the lifetime of s1 or s2
+- The way we are calling it s1 and s2 have the same lifetime
+  - But eventually this might change
+$notes-end$
+
 $web-only$
 In this example, we have defined a function called `moar_cowbell` which takes two string references and returns the one that contains more bell emoji, unfortunately this will not compile. Rust is smart enough to figure out most lifetime requirements without them having to be explicitly defined, through type inference. This is a system where the compiler looks at all possible type annotations that could be applied and when there is only one, the developer doesn't have to provide one. Lifetimes are actually a kind of type definition, in this situation the lifetime of the return value could come from `s1` or it could come from `s2`, because there isn't just one, we will need to add a little more information.
 $web-only-end$
@@ -84,6 +102,12 @@ fn moar_cowbell<'a>(s1: &'a str, s2: &'a str) -> &'a str {
     }
 }
 ```
+$notes$
+Example 3
+- Same as previous, now with lifetime annotations
+- Lifetimes are provided like generic arguments
+  - though with a '
+$notes-end$
 
 $web-only$
 With this newly encoded lifetime information, the compiler now knows that `s1`, `s2` and the return value all need to live the same lifetime.

@@ -9,3 +9,10 @@ The package manager and test runner and binary installer and build pipeline runn
 - `cargo install mdbook`
 
 [Crates.io](https://crates.io)
+
+$notes$
+Cargo
+- Like NPM for "crates"
+- Crates.io like npmjs.org
+- Owned and operated by the community
+$notes-end$

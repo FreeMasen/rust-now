@@ -20,3 +20,12 @@ rustc --version
 cargo --version
 rustup --version
 ```
+
+$notes$
+Rustup
+- version manager for the compiler
+- primary place to install
+- installs 2 other items
+  - rustc
+  - cargo
+$notes-end$

@@ -5,4 +5,11 @@
 ### Lib
 * Produces linkable library
 * A project can have many libs
-  * Only one lib
+
+$notes$
+Project Types
+- Two major flavors
+  - Lib = usable by others
+  - Bin = executable
+    - must export main/start point
+$notes-end$

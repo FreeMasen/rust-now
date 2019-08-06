@@ -12,3 +12,8 @@ fn main() {
     println!("{}", x);
 }
 ```
+$notes$
+Example 1
+- This doesn't compile because x might not have a value
+- The Option enum helps with this, which we will talk about later
+$notes-end$

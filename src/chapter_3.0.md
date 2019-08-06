@@ -247,3 +247,19 @@ Rust has been going through a huge ergonomic push to make life easier, things li
 
 With that, let's take a quick glance at a few other features rust can boast about.
 $web-only-end$
+
+
+$notes$
+Big slide, here's the highlights
+- The last 2 years have brought a bunch of ergonomic wins
+  - if you have ever heard of "fighting the borrow checker" that era is pretty much over
+    - NLL
+- We are on the cusp of async/await
+  - Future trait (poll method)
+    - Community built
+    - adopted in last major release
+  - Plugable runtimes
+- Other Highlights
+  - Swappable memory allocator
+    - huge for embedded
+$notes-end$

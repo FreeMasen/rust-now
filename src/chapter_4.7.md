@@ -15,3 +15,8 @@ mod test {
     }
 }
 ```
+$notes$
+Tests!
+- Integrated test framework
+- makes them first class concepts
+$notes-end$

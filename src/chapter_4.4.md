@@ -29,3 +29,13 @@ impl Thing {
     }
 }
 ```
+
+$notes$
+Object Oriented (sort of)
+- Structs are Plain Old Objects
+- `impl` for method defs
+- Like python, self is first arg at def site
+  - self = move
+  - &self = reference
+  - &mut self = mutable references
+$notes-end$
