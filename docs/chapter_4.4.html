@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Traits - Now is the Time</title>
+        <title>User Defined Types - Now is the Time</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> User Defined Types</a></li><li><a href="chapter_4.4.html" class="active"><strong aria-hidden="true">4.4.</strong> Traits</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Macros</a></li><li><a href="chapter_4.6.html"><strong aria-hidden="true">4.6.</strong> Tests</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> Resources</a></li></ol></li></ol>
+                <ol class="chapter"><li><a href="chapter_1.html"><strong aria-hidden="true">1.</strong> Rust?</a></li><li><a href="chapter_2.0.html"><strong aria-hidden="true">2.</strong> How?</a></li><li><ol class="section"><li><a href="chapter_2.1.html"><strong aria-hidden="true">2.1.</strong> Mutability?</a></li><li><a href="chapter_2.2.html"><strong aria-hidden="true">2.2.</strong> Ownership and Borrowing</a></li><li><a href="chapter_2.3.html"><strong aria-hidden="true">2.3.</strong> Lifetimes?</a></li><li><a href="chapter_2.4.html"><strong aria-hidden="true">2.4.</strong> No Null?</a></li><li><a href="chapter_2.5.html"><strong aria-hidden="true">2.5.</strong> So?</a></li></ol></li><li><a href="chapter_3.0.html"><strong aria-hidden="true">3.</strong> Why Now</a></li><li><a href="chapter_4.0.html"><strong aria-hidden="true">4.</strong> Other Niceties</a></li><li><ol class="section"><li><a href="chapter_4.1.html"><strong aria-hidden="true">4.1.</strong> Arithmetic Data Types</a></li><li><a href="chapter_4.2.html"><strong aria-hidden="true">4.2.</strong> Pattern Matching</a></li><li><a href="chapter_4.3.html"><strong aria-hidden="true">4.3.</strong> Error Handling</a></li><li><a href="chapter_4.4.html" class="active"><strong aria-hidden="true">4.4.</strong> User Defined Types</a></li><li><a href="chapter_4.5.html"><strong aria-hidden="true">4.5.</strong> Traits</a></li><li><a href="chapter_4.6.html"><strong aria-hidden="true">4.6.</strong> Macros</a></li><li><a href="chapter_4.7.html"><strong aria-hidden="true">4.7.</strong> Tests</a></li></ol></li><li><a href="chapter_5.0.html"><strong aria-hidden="true">5.</strong> Getting Started</a></li><li><ol class="section"><li><a href="chapter_5.1.html"><strong aria-hidden="true">5.1.</strong> Rustup</a></li><li><a href="chapter_5.2.html"><strong aria-hidden="true">5.2.</strong> Cargo</a></li><li><a href="chapter_5.3.html"><strong aria-hidden="true">5.3.</strong> Bin vs Lib</a></li><li><a href="chapter_5.4.html"><strong aria-hidden="true">5.4.</strong> Std Types</a></li><li><a href="chapter_5.5.html"><strong aria-hidden="true">5.5.</strong> Resources</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,88 +147,36 @@
                     <main>
                         <style>.presentation-only.not-presenting{display:none}.article-content.presenting{display:none}
 </style>
-<h1><a class="header" href="#traits" id="traits">Traits</a></h1>
-<!--web-only-->
-<!--web-only-end-->
-<pre><pre class="playpen"><code class="language-rust">#use std::fmt::{
-#    Formatter,
-#    Result,
-#    Display,
-#};
-#enum Message {
-#    Join(String),
-#    Leave(String),
-#    Nick(String, String),
-#    Shout { from: String, msg: String},
-#    Whisper {from: String, to: String, msg: String},
-#    Kick(String),
-#}
-impl Display for Message {
-    fn fmt(&amp;self, f: &amp;mut Formatter) -&gt; Result {
-        match self {
-            Message::Join(username) =&gt; {
-                write!(f, &quot;👋 {} has joined the chat&quot;, username)
-            },
-            Message::Leave(username) =&gt; {
-                write!(f, &quot;😢 {} has left the chat&quot;, username)
-            },
-            Message::Nick(from, to) =&gt; {
-                write!(f, &quot;😎 {} has changed their username to {}&quot;, from, to)
-            },
-            Message::Shout { from, msg } =&gt; {
-                write!(f, &quot;😃 {}: {}&quot;, from, msg)
-            },
-            Message::Whisper { from, to, msg } =&gt; {
-                write!(f, &quot;🐱‍👤 secret message for {} from {}:\n    {}&quot;, to, from, msg)
-            },
-            Message::Kick(who) =&gt; {
-                write!(f, &quot;👢 user {} has been kicked from the channel&quot;, who)
-            },
-        }
-    }
-}
-fn main() {
-    #    let messages = vec![
-#        Message::Join(String::from(&quot;person1&quot;)),
-#        Message::Join(String::from(&quot;person2&quot;)),
-#        Message::Join(String::from(&quot;person3&quot;)),
-#        Message::Nick(String::from(&quot;person2&quot;), String::from(&quot;JunkMaster3000&quot;)),
-#        Message::Shout { 
-#            from: String::from(&quot;JunkMaster3000&quot;), 
-#            msg: String::from(&quot;All Hail JunkMaster!&quot;)
-#        },
-#        Message::Whisper {
-#            from: String::from(&quot;person1&quot;),
-#            to: String::from(&quot;person3&quot;),
-#            msg: String::from(&quot;Whoa, that went in a different direction than I was expecting&quot;),
-#        },
-#        Message::Whisper {
-#            from: String::from(&quot;person3&quot;),
-#            to: String::from(&quot;person1&quot;),
-#            msg: String::from(&quot;lol, yeah JunkMaster is a little wild sometimes&quot;),
-#        },
-#        Message::Leave(String::from(&quot;person1&quot;)),
-#    ];
-    //...
-    for msg in messages {
-        println!(&quot;{}&quot;, msg);
-    }
-}
-</code></pre></pre>
+<h1><a class="header" href="#user-defined-types" id="user-defined-types">User Defined Types</a></h1>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
-pub trait Firstable&lt;T&gt; {
-    fn first(&amp;self) -&gt; &amp;T;
+struct Thing {
+    stuff: u8,
 }
-impl&lt;T&gt; Firstable&lt;T&gt; for Vec&lt;T&gt; {
-    fn first(&amp;self) -&gt; &amp;T {
-        &amp;self[0]
+
+impl Thing {
+    pub fn new() -&gt; Self {
+        Self {
+            stuff: 0,
+        }
     }
-}
-impl&lt;T&gt; Firstable&lt;T&gt; for &amp;[T] {
-    fn first(&amp;self) -&gt; &amp;T {
-        &amp;self[0]
+    pub fn increment(&amp;mut self) {
+        self.stuff += 1;
+    }
+    pub fn decrement(&amp;mut self) {
+        self.stuff -= 1;
+    }
+    // private
+    fn zero(&amp;mut self) {
+        self.stuff = 0;
+    }
+    fn stuff(&amp;self) {
+        self.stuff // copy
+    }
+    // consumes self
+    fn inner(self) {
+        self.stuff
     }
 }
 #}</code></pre></pre>

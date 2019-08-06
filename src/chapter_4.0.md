@@ -6,5 +6,8 @@ $web-only-end$
 
 - Arithmetic Data Types
 - Pattern Matching
-- Channels
-- Macros
+- Error Handling
+- User Defined Types
+- Traits
+- Robust Macros
+- Built in testing framework

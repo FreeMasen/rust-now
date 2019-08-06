@@ -8,6 +8,7 @@ $web-only$
 * [New Rustacean](https://newrustacean.com/)
 * [Rust Language Cheat Sheet](https://cheats.rs/)
 $web-only-end$
+
 $slides-only$
 * [*The* Book](https://doc.rust-lang.org/book/)
   * https://doc.rust-lang.org/book/

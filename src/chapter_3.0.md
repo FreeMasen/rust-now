@@ -69,7 +69,7 @@ fn main() {
         let s = s1;
         for x in 0..10 {
             s.send(Some(x as isize)).unwrap();
-            sleep(Duration::from_millis(100 * x));
+            sleep(Duration::from_millis(50 * x));
         }
         s.send(None).unwrap();
     });
@@ -80,7 +80,7 @@ fn main() {
         for y in (-10..0).rev() {
             s.send(Some(y)).unwrap();
             let sleep_inc = y.abs() as u64;
-            sleep(Duration::from_millis(100 * sleep_inc));
+            sleep(Duration::from_millis(50 * sleep_inc));
         }
         s.send(None).unwrap();
     });
@@ -110,6 +110,7 @@ use std::{
 
 #[macro_use]
 extern crate futures;
+extern crate tokio;
 use std::fmt;
 
 use futures::{
@@ -145,7 +146,7 @@ impl Stream for Counter {
         );
         let next_wait = self.idx.abs() as u64;
         self.interval = Interval::new_interval(
-            Duration::from_millis(1 + next_wait * 100)
+            Duration::from_millis(1 + next_wait * 10)
         );
         Ok(if self.inc {
             if self.idx < self.end {

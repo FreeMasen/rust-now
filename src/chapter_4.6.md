@@ -1,17 +1,22 @@
-# Tests
+# Macros
+
+$web-only$
+
+$web-only-end$
+$slides-only$
+
+$slides-only-end$
 ```rust
-fn add_one(v: u8) -> u8 {
-    v + 1
+fn main() {
+    println!("I'm a macro");
+    println!("I'm from a custom derive: {:?}", Thing);
+    println!("I'm from a an attribute macro: {}", say_hi());
 }
+#[derive(Debug)]
+struct Thing;
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_add_one() {
-        assert_eq!(2, add_one(1));
-        assert_eq!(3, add_one(2));
-    }
+#[inline]
+fn say_hi() -> &'static str {
+    "Hello world!"
 }
 ```

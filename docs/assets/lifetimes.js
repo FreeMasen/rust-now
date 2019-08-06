@@ -88,5 +88,8 @@ function createBLabel() {
  */
 function getFirstPre() {
     let title = document.getElementById('data-lives-a-finite-life');
+    if (title.nodeName.toLowerCase() === 'a') {
+        title = title.parentElement;
+    }
     return title.nextElementSibling;
 }

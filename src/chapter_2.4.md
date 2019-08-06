@@ -7,7 +7,7 @@ $slides-only$
 #### Not allowed
 $slides-only-end$
 ```rust
-main() {
+fn main() {
     let x: usize;
     println!("{}", x);
 }
