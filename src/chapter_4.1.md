@@ -1,6 +1,6 @@
 # Arithmetic Data Types
 $web-only$
-While this feature might have a pretty intimidating name (I program so I don't need to do math), it is an extremely powerful tool. Sometimes referred to as _tagged unions_ or _enums with associated data_, it is a way to explicitly define one datatype that might have a few different shapes. It looks something like this.
+While this feature might have a pretty intimidating name (I program so I don't need to do math), it is an extremely powerful tool. Sometimes referred to as _tagged unions_, _enums with associated data_, or _sum types_, it is a way to explicitly define one datatype that might have a few different shapes. It looks something like this.
 $web-only-end$
 
 ```rust

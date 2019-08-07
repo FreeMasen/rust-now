@@ -41,10 +41,10 @@ Example 2
 $notes-end$
 
 $web-only$
-Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we _move_ the data into that new variable. In the above `x` owns the String "ex" on line 1, then on line 2 we move it into `y` so at that point `y` owns 0, when we try to look inside of `x` on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.
+Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we _move_ the data into that new variable. In the above `x` owns the String "ex" on line 1, then on line 2 we move it into `y` so at that point `y` owns "ex", when we try to look inside of `x` on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.
 
 When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.
-$web-only-end
+$web-only-end$
 $slides-only$
 ### Loaning data mutably
 

@@ -1,4 +1,7 @@
 # Tests
+$web-only$
+One of my personal favorite things about rust is that tests are a first class citizen. Simply using the `#[test]` attribute you can define your own test, these will only run when passed to the test runner, otherwise they will be stripped out of your program.
+$web-only-end$
 ```rust
 fn add_one(v: u8) -> u8 {
     v + 1

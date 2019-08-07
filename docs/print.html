@@ -638,9 +638,9 @@ Example 2
   - x is dead
 -->
 <!--web-only-->
-<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns the String &quot;ex&quot; on line 1, then on line 2 we move it into <code>y</code> so at that point <code>y</code> owns 0, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
-<p>When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.
-$web-only-end</p>
+<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns the String &quot;ex&quot; on line 1, then on line 2 we move it into <code>y</code> so at that point <code>y</code> owns &quot;ex&quot;, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
+<p>When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.</p>
+<!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#loaning-data-mutably" id="loaning-data-mutably">Loaning data mutably</a></h3>
 <!--slides-only-end-->
@@ -1354,8 +1354,8 @@ var ___presentationModeHider = new PresentationModeHider();
 <!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust">fn main() {
     let mut x = 1;
-    let y = &amp;mut x;
     {
+        let y = &amp;mut x;
        *y += 1;
     }
     println!(&quot;{}&quot;, x);
@@ -1868,7 +1868,7 @@ var ___presentationModeHider = new PresentationModeHider();
 </style>
 <h1><a class="header" href="#arithmetic-data-types" id="arithmetic-data-types">Arithmetic Data Types</a></h1>
 <!--web-only-->
-<p>While this feature might have a pretty intimidating name (I program so I don't need to do math), it is an extremely powerful tool. Sometimes referred to as <em>tagged unions</em> or <em>enums with associated data</em>, it is a way to explicitly define one datatype that might have a few different shapes. It looks something like this.</p>
+<p>While this feature might have a pretty intimidating name (I program so I don't need to do math), it is an extremely powerful tool. Sometimes referred to as <em>tagged unions</em>, <em>enums with associated data</em>, or <em>sum types</em>, it is a way to explicitly define one datatype that might have a few different shapes. It looks something like this.</p>
 <!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -2325,6 +2325,9 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#error-handling" id="error-handling">Error Handling</a></h1>
+<!--web-only-->
+<p>With the power of the rust enum, it becomes easy to return a value that is <em>either</em> a success or failure. This means we don't need to lean on runtime exceptions as our only error handling option. Instead we can use the <code>Result</code> type. This is an enum provided by the standard library that has two cases, <code>Ok</code> for success and <code>Err</code> for errors. </p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">fn main() -&gt; Result&lt;(), String&gt; {
     // question mark to short circut
     could_fail(1)?;
@@ -2347,6 +2350,10 @@ fn could_fail(n: u8) -&gt; Result&lt;(), String&gt; {
 }
 
 </code></pre></pre>
+<!--web-only-->
+<p>In the above example we have a function called <code>could_fail</code> that will always fail on even numbers. Inside of our <code>main</code> function, we call <code>could_fail</code> with a few different options for error handling.</p>
+<p>The first is the <code>?</code> operator, this short circuits <code>main</code> if the call was an error. Next we have the long form pattern matching for when you really do care about what to do on an error. Third we have a call that just ignores there is even a return value, this will cause the compiler to warn you about this and lastly we return the result of the call to <code>can_fail</code>. Overall this creates a great error handing experience, first you will always know if the functions you are calling can fail. In the event you want to ignore that fact, you can always just short circuit or even ignore the error case.</p>
+<!--web-only-end-->
 <!--notes
 Error Handling
 - Enums + Pattern matching = beautiful error handling
@@ -2480,6 +2487,9 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#user-defined-types" id="user-defined-types">User Defined Types</a></h1>
+<!--web-only-->
+<p>Rust also allows users to create their own types, this brings the object oriented paradigm into play. The key feature here is that object definitions are <em>always</em> plain old object style. When you create a new <code>struct</code> you can only give it data properties, no methods. To add methods you need to use the <code>impl</code> keyword to define them. Similar to python, <code>self</code> is explicitly provided as the first argument to any non-static methods. </p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
@@ -2503,15 +2513,56 @@ impl Thing {
     fn zero(&amp;mut self) {
         self.stuff = 0;
     }
-    fn stuff(&amp;self) {
+    pub fn stuff(&amp;self) {
         self.stuff // copy
     }
     // consumes self
-    fn inner(self) {
+    fn inner(self) -&gt; u8 {
         self.stuff
     }
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>Note that in the above example we have a few flavors of the <code>self</code> keyword. First we see that <code>new</code> method returns <code>Self</code>, this means we could change the name of our struct from <code>This</code> to <code>That</code> and we don't actually have to touch this method. Because <code>new</code> takes no arguments it actually work like a static method in other languages.</p>
+<p>Next we have <code>inc</code> and <code>dec</code> which both take <code>&amp;mut self</code> (a mutable reference to self) as their first argument, this allows them to modify the internal contents of <code>self</code>. <code>zero</code> has the same version of <code>self</code> but doesn't have the <code>pub</code> keyword, which makes it private. <code>stuff</code> takes an immutable reference to self, which means we can't change it but we could copy the inner <code>u8</code> as the return value. Lastly <code>inner</code> takes self by value, that means it actually has moved from the call site into this function and at the end of it <code>self</code> will be consumed. </p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">#fn main() {
+#struct Thing {
+#    stuff: u8,
+#}
+#
+#impl Thing {
+#    pub fn new() -&gt; Self {
+#        Self {
+#            stuff: 0,
+#        }
+#    }
+#    pub fn increment(&amp;mut self) {
+#        self.stuff += 1;
+#    }
+#    pub fn decrement(&amp;mut self) {
+#        self.stuff -= 1;
+#    }
+#    // private
+#    fn zero(&amp;mut self) {
+#        self.stuff = 0;
+#    }
+#    pub fn stuff(&amp;self) {
+#        self.stuff // copy
+#    }
+#    // consumes self
+#    fn inner(self) -&gt; u8 {
+#        self.stuff
+#    }
+#}
+let mut thing = Thing::new();
+thing.inc();
+thing.dec();
+// can't call thing.zero();
+println!(&quot;{}&quot;, thing.stuff());
+println!(&quot;{}&quot;, thing.inner()); // Thing dies here
+#}
+</code></pre></pre>
 <!--notes
 Object Oriented (sort of)
 - Structs are Plain Old Objects
@@ -2648,6 +2699,8 @@ var ___presentationModeHider = new PresentationModeHider();
 </style>
 <h1><a class="header" href="#traits" id="traits">Traits</a></h1>
 <!--web-only-->
+<p>Traits are Rust's primary tool for dynamism. A trait can be defined and then implemented by a large number of types. Trait names can be used in place of type names to allow for that dynamic behavior. Conceptually they are very similar to interfaces however they can only define behavior, not data.</p>
+<p>There are two ways to work with traits, first is that you can implement traits defined by <em>others</em> for your types. In this example we are implementing the standard library trait <code>Display</code> for our <code>Message</code> enum from before. The <code>Display</code> trait exposes 1 method, <code>fmt</code> which takes a reference to the implementor and a formatter, it then expects a return value of a <code>std::fmt::Result</code> which is what <code>write!</code> returns.</p>
 <!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#implement-other-traits-for-your-type" id="implement-other-traits-for-your-type">Implement other traits for your type</a></h3>
@@ -2717,6 +2770,10 @@ fn main() {
     }
 }
 </code></pre></pre>
+<!--web-only-->
+<p>With this defined we now can just pass any <code>Message</code> to <code>println!</code> using the <code>{}</code> syntax to have it call our <code>fmt</code> method.</p>
+<p>The other way to work with types is to define your own types which can be implemented for anyone else's types. In th next example, we have defined a trait called <code>Firstable</code> which allows us to get a reference to something returned by <code>first</code>. Below, it is implemented for two types of rust collections, Vectors and Arrays.</p>
+<!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#implement-your-traits-for-other-types" id="implement-your-traits-for-other-types">Implement your traits for other types</a></h3>
 <!--slides-only-end-->
@@ -2871,6 +2928,8 @@ var ___presentationModeHider = new PresentationModeHider();
 </style>
 <h1><a class="header" href="#macros" id="macros">Macros</a></h1>
 <!--web-only-->
+<p>A lot can be said about the macro system in rust, so I wont dwell here for long. Because there are so may syntax restrictions, rust exposes a very rich system for extending that syntax. You may have noticed that when we need to interpolate a string we have used <code>println!</code> or <code>format!</code>, the exclamation point at the end indicates that this was defined as a macro instead of a function.</p>
+<p>There are 3 types of rust macros, the &quot;function style&quot; macros we have been using for interpolation have been one. There are also &quot;custom derives&quot; which allow for the almost automatic implementation of traits (like the debug trait in the example below). Lastly there are &quot;attribute style&quot; macros, this allows for marking any function, struct or enum with an <code>#[attribute]</code> that will perform some transformation on that. The example below has an overview of what the 3 different syntaxes look like.</p>
 <!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#syntax-extensions-and-more" id="syntax-extensions-and-more">Syntax extensions and More</a></h3>
@@ -3024,6 +3083,9 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#tests" id="tests">Tests</a></h1>
+<!--web-only-->
+<p>One of my personal favorite things about rust is that tests are a first class citizen. Simply using the <code>#[test]</code> attribute you can define your own test, these will only run when passed to the test runner, otherwise they will be stripped out of your program.</p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
@@ -3173,12 +3235,17 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#getting-started" id="getting-started">Getting Started</a></h1>
+<!--web-only-->
+<p>When getting started there are a few tools that you will need to learn a bit about which will ease your experience, there are also a few details that can be a bit confusing when getting started.</p>
+<!--web-only-end-->
+<!--slides-only-->
 <ul>
 <li>Rustup</li>
 <li>Cargo</li>
 <li>Project Types</li>
 <li>The Standard Library</li>
 </ul>
+<!--slides-only-end-->
 <!--notes
 Getting Started
 -->
@@ -3308,15 +3375,26 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#rustup" id="rustup">Rustup</a></h1>
+<!--web-only-->
+<p>The first tool to talk about is rustup, which is a sort of environment manager for rust. It will install the latest compiler for you or add new compiler targets to your computer. When getting started the most important thing about it is that it will take care of installing just about everything you could want for rust development.</p>
+<!--web-only-end-->
+<!--slides-only-->
 <h2><a class="header" href="#environment-manager-for-rust" id="environment-manager-for-rust">Environment manager for rust</a></h2>
+<!--slides-only-end-->
 <h3><a class="header" href="#macoslinux" id="macoslinux">Macos/Linux</a></h3>
 <pre><code class="language-sh">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
+<!--web-only-->
+<p>For unix-like systems the process is dead simple, run the above in your terminal and you will be all set.</p>
+<!--web-only-end-->
 <h3><a class="header" href="#windows" id="windows">Windows</a></h3>
 <ol>
 <li>Go to <a href="https://rustup.rs/">https://rustup.rs/</a></li>
 <li>Download and install rustup-init.exe</li>
 </ol>
+<!--web-only-->
+<p>For windows users it is a little more complicated, first you need to actually run an installer which you can find at the link above. You may also need to have re-distributable visual C++ which you can find <a href="https://www.microsoft.com/en-us/download/developer-tools.aspx">here</a>.</p>
+<!--web-only-end-->
 <!--slides-only-->
 <h2><a class="header" href="#contents" id="contents">Contents</a></h2>
 <ol>
@@ -3464,6 +3542,12 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#cargo" id="cargo">Cargo</a></h1>
+<!--web-only-->
+<p>Next up is cargo, every rust developer's best friend, this tool will do a the heaving lifting when if comes to working with rust. First it can be used to boot strap you a new project by using the <code>cargo new [folder-name]</code> and <code>cargo init</code> commands. It will also run all of your <code>#[test]</code>s that we talked about before using the <code>cargo test</code> command. You can also use <code>cargo build</code> to compiler your program into the <code>targets</code> folder or <code>cargo run</code> to both compile it and run it. For validating your program works correctly you can use the <code>cargo check</code> which will work faster that <code>cargo build</code>. Lastly, you can use <code>cargo install</code> to install new command line tools for example <code>cargo install mdbook</code> would install the static site generate used to write this site.</p>
+<p>It also helps you manage your dependencies, in a Cargo.toml file in your project's root you will be able to list any packages that exist on <a href="https://crates.io">crates.io</a> (which are referred to as &quot;crates&quot; because of puns). When you compile or run your program with cargo it will download and install those packages on your system locally and set them up to be included in your program.</p>
+<p>so, in short, it works a lot like npm but for rust.</p>
+<!--web-only-end-->
+<!--slides-only-->
 <p>The package manager and test runner and binary installer and build pipeline runner for most rust programs.</p>
 <ul>
 <li><code>cargo new</code></li>
@@ -3474,6 +3558,7 @@ var ___presentationModeHider = new PresentationModeHider();
 <li><code>cargo install mdbook</code></li>
 </ul>
 <p><a href="https://crates.io">Crates.io</a></p>
+<!--slides-only-end-->
 <!--notes
 Cargo
 - Like NPM for "crates"
@@ -3606,6 +3691,10 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#bin-vs-lib" id="bin-vs-lib">Bin vs Lib</a></h1>
+<!--web-only-->
+<p>One thing that can be confusing is that you need to explicitly state if your are creating a library or a binary project. <code>cargo new</code> will create a binary by default, this is a program that will actually be <em>run</em>, meaning it needs to have a <code>main</code> function to know where to start. You can also create a library project by executing <code>cargo new --lib</code>, this will set you up to have a project that other programs can use. You can always tell if your working on a library or a binary because libraries have a starting point at <code>lib.rs</code> while binaries start at <code>main.rs</code>. </p>
+<!--web-only-end-->
+<!--slides-only-->
 <h3><a class="header" href="#bin" id="bin">Bin</a></h3>
 <ul>
 <li>Must have main</li>
@@ -3616,6 +3705,7 @@ var ___presentationModeHider = new PresentationModeHider();
 <li>Produces linkable library</li>
 <li>A project can have many libs</li>
 </ul>
+<!--slides-only-end-->
 <!--notes
 Project Types
 - Two major flavors
@@ -3749,6 +3839,9 @@ var ___presentationModeHider = new PresentationModeHider();
 }
 </style>
 <h1><a class="header" href="#std-types" id="std-types">Std Types</a></h1>
+<!--web-only-->
+<p>There are a few types provided by rust that that can be confusing when getting started. The first one we covered which is the <code>Result</code> type.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#result" id="result"><code>Result</code></a></h2>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -3758,6 +3851,10 @@ enum Result&lt;T, E&gt; {
     Err(E)
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>The above is what the definition of the result type actually looks like. It really is just an enum with two cases, however there are a few things the compiler does that make it a little more special (like warning on unused).</p>
+<p>Next is the <code>Option</code> type, this is the way we can work with data that could be unavailable. Like result it has two cases but instead of ok and error they are Some and None, where Some has data and None does not.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#option" id="option"><code>Option</code></a></h2>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -3767,26 +3864,75 @@ enum Option&lt;T&gt; {
     None,
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>There are a number of really nice features surrounding this type just like there is for Result, but in the end it is also just an enum defined like the above code block.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#string-vs-str" id="string-vs-str"><code>String</code> vs <code>&amp;str</code></a></h2>
+<!--slides-only-->
 <ul>
 <li><code>String</code>: Heap allocated growable buffer</li>
 <li><code>&amp;str</code>: Reference to fixed size buffer</li>
 </ul>
+<!--web-only-->
+<p>The next type to cover is strings. In rust there are two different types of strings which can get a little confusing but they are there for good reason. First is the <code>String</code> type, this is the growable string which will always be heap allocated (if that matters to you). The other type is <code>str</code> or a string slice, this is always used as a reference either to a static string or to a <code>String</code>. If you are familiar with the <code>StringBuilder</code> in C#, <code>String</code> fills a similar role.</p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let mut string = String::new();
+    string.push('a');
+    string.push('b');
+    string.push('c');
+    string.push_str(&quot;def&quot;);
+    println!(&quot;String: {}&quot;, string);
+    let fixed: &amp;str = &quot;abcdef&quot;; // static string;
+    println!(&quot;fixed: {}&quot;, fixed);
+    let other: &amp;str = &amp;string[1..3]; // slice of `string`
+    println!(&quot;other: {}&quot;, other);
+}
+</code></pre></pre>
 <h2><a class="header" href="#vect-vs-t-n" id="vect-vs-t-n"><code>Vec&lt;T&gt;</code> vs <code>[T; N]</code></a></h2>
+<!--slides-only-->
 <ul>
 <li><code>Vec</code>: Growable array (ArrayList/List)</li>
 <li><code>[T; N]</code>: Fixed size array</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>Similar to <code>String</code> and <code>str</code>, <code>Vec</code> is the growable collection type while <code>[T; N]</code> is the fixed size array. </p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let mut v: Vec&lt;usize&gt; = Vec::new();
+    v.push(1);
+    v.push(2);
+    v.push(3);
+    println!(&quot;Vec: {:?}&quot;, v);
+    let mut arr: [usize; 3] = [0;3];
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[3] = 3;
+    println!(&quot;arr: {:?}&quot;, arr);
+}
+</code></pre></pre>
 <h2><a class="header" href="#boxt" id="boxt"><code>Box&lt;T&gt;</code></a></h2>
+<!--slides-only-->
 <ul>
 <li>Heap allocated pointer</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>The default for types is that they will be stack allocated, that means that sometimes it can be tough to get a type to live for longer than any given function. This is where the <code>Box</code> type comes it, this type explicitly puts your data on the heap but if you don't much care about that that's ok too because you can actually use a boxed version of data just like an unboxed version.</p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">#fn main() {
 let n = 100;
 let heap_n = Box::new(n);
+if heap_n &gt; 10 {
+    println!(&quot;big!&quot;);
+}
 #}
 </code></pre></pre>
 <h2><a class="header" href="#numbers" id="numbers">Numbers</a></h2>
+<!--web-only-->
+<p>There are quite a few number types in rust, the full list is below. Most of these are pretty self explanatory, each is prefixed with either i, u or f (integer, unsigned-integer, or float) and then the size of that number. So <code>i8</code> can only go up to 127 while u8 can go up to 255 but not below 0. The only slightly confusing ones are <code>isize</code> and <code>usize</code> which will always corrispond to the computer you compiled it for (isize on a 64bit system is i64 but on a 32 bit system is i32).</p>
+<!--web-only-end-->
 <ul>
 <li><code>u8</code></li>
 <li><code>i8</code></li>
@@ -3804,11 +3950,19 @@ let heap_n = Box::new(n);
 <li><code>isize</code></li>
 </ul>
 <h2><a class="header" href="#tuples" id="tuples">Tuples</a></h2>
+<!--slides-only-->
 <ul>
 <li>First class data type</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>Tuples are a slightly looser data type, you can think of them like a fixed size collection of possibly different types. Their primary use is for returning multiple pieces of data from one function. One of the nice things about them is that they can be used to easily de-structure some return value, the below example the variables x and y are initialized to the respective numbers from <code>get_tuple</code>. If you don't want to destructure you can access the inner values with dot and then the index of the value you want.</p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">#fn main() {
 let (x, y) = get_tuple();
+let pair = get_tuple();
+println!(&quot;x: {}, pair.0: {}&quot;, x, pair.0);
+println!(&quot;y: {}, pair.1: {}&quot;, y, pair.1);
 #}
 fn get_tuple() -&gt; (u8, u8) {
     (1, 2)
@@ -3956,19 +4110,64 @@ var ___presentationModeHider = new PresentationModeHider();
   display: none;
 }
 </style>
-<h1><a class="header" href="#resources" id="resources">Resources</a></h1>
 <!--web-only-->
+<h1><a class="header" href="#resources" id="resources">Resources</a></h1>
 <ul>
-<li><a href="https://doc.rust-lang.org/book/"><em>The</em> Book</a></li>
-<li><a href="https://doc.rust-lang.org/std/index.html">std documentation</a></li>
-<li><a href="https://github.com/rust-lang/rustlings/">rustlings</a></li>
-<li><a href="https://docs.rs">docs.rs</a></li>
-<li><a href="https://doc.rust-lang.org/stable/rust-by-example/">Rust By Example</a></li>
-<li><a href="https://newrustacean.com/">New Rustacean</a></li>
-<li><a href="https://cheats.rs/">Rust Language Cheat Sheet</a></li>
+<li><a href="https://doc.rust-lang.org/book/"><em>The</em> Book</a>
+<ul>
+<li>A full explanation of almost everything about the language</li>
+</ul>
+</li>
+<li><a href="https://doc.rust-lang.org/std/index.html">std documentation</a>
+<ul>
+<li>A great guide to standard rust function/types</li>
+</ul>
+</li>
+<li><a href="https://github.com/rust-lang/rustlings/">rustlings</a>
+<ul>
+<li>Rust exercises</li>
+</ul>
+</li>
+<li><a href="https://docs.rs">docs.rs</a>
+<ul>
+<li>Crates.io crate documentation</li>
+</ul>
+</li>
+<li><a href="https://doc.rust-lang.org/stable/rust-by-example/">Rust By Example</a>
+<ul>
+<li>Learn rust by example</li>
+</ul>
+</li>
+<li><a href="https://newrustacean.com/">New Rustacean</a>
+<ul>
+<li>Podcast about learning Rust</li>
+</ul>
+</li>
+<li><a href="https://cheats.rs/">Rust Language Cheat Sheet</a>
+<ul>
+<li>For quickly looking up syntax/semantics</li>
+</ul>
+</li>
+<li><a href="https://www.manning.com/books/rust-in-action">Rust in Action Course ($)</a>
+<ul>
+<li>Video course that will teach you rust</li>
+</ul>
+</li>
+<li><a href="https://rust-embedded.github.io/discovery/">Rust Embedded Book</a>
+<ul>
+<li>Slightly more advanced</li>
+<li>Guide to running Rust on Raw Metal</li>
+</ul>
+</li>
+</ul>
+<h1><a class="header" href="#additional-reading" id="additional-reading">Additional Reading</a></h1>
+<ul>
+<li><a href="https://hacks.mozilla.org/2017/08/inside-a-super-fast-css-engine-quantum-css-aka-stylo/">Lin Clark on Quantum CSS Engine</a></li>
+<li><a href="https://paper.dropbox.com/doc/Await-Syntax-Write-Up-t9NlOSeI4RQ8AINsaSSyJ">Without Boat's on <code>.await</code></a></li>
 </ul>
 <!--web-only-end-->
 <!--slides-only-->
+<h1><a class="header" href="#resources-1" id="resources-1">Resources</a></h1>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/"><em>The</em> Book</a>
 <ul>

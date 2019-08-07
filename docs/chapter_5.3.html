@@ -158,6 +158,10 @@
 }
 </style>
 <h1><a class="header" href="#bin-vs-lib" id="bin-vs-lib">Bin vs Lib</a></h1>
+<!--web-only-->
+<p>One thing that can be confusing is that you need to explicitly state if your are creating a library or a binary project. <code>cargo new</code> will create a binary by default, this is a program that will actually be <em>run</em>, meaning it needs to have a <code>main</code> function to know where to start. You can also create a library project by executing <code>cargo new --lib</code>, this will set you up to have a project that other programs can use. You can always tell if your working on a library or a binary because libraries have a starting point at <code>lib.rs</code> while binaries start at <code>main.rs</code>. </p>
+<!--web-only-end-->
+<!--slides-only-->
 <h3><a class="header" href="#bin" id="bin">Bin</a></h3>
 <ul>
 <li>Must have main</li>
@@ -168,6 +172,7 @@
 <li>Produces linkable library</li>
 <li>A project can have many libs</li>
 </ul>
+<!--slides-only-end-->
 <!--notes
 Project Types
 - Two major flavors

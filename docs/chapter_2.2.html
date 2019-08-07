@@ -195,9 +195,9 @@ Example 2
   - x is dead
 -->
 <!--web-only-->
-<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns the String &quot;ex&quot; on line 1, then on line 2 we move it into <code>y</code> so at that point <code>y</code> owns 0, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
-<p>When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.
-$web-only-end</p>
+<p>Our friendly complier tells us that we are trying to use a previously moved value, what does that mean? Well, in rust when we assign one variable to another we <em>move</em> the data into that new variable. In the above <code>x</code> owns the String &quot;ex&quot; on line 1, then on line 2 we move it into <code>y</code> so at that point <code>y</code> owns &quot;ex&quot;, when we try to look inside of <code>x</code> on line 3, we would find it empty because that value was moved. Here is the first rule of ownership and borrowing we need to know: any piece of data can only have 1 owner, that owner can lend out a reference to the data but the owner remains the same.</p>
+<p>When we pair this concept with the explicitly mutable declaration we start to see the full picture of what is going on. Consider this example.</p>
+<!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#loaning-data-mutably" id="loaning-data-mutably">Loaning data mutably</a></h3>
 <!--slides-only-end-->

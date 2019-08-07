@@ -158,6 +158,9 @@
 }
 </style>
 <h1><a class="header" href="#user-defined-types" id="user-defined-types">User Defined Types</a></h1>
+<!--web-only-->
+<p>Rust also allows users to create their own types, this brings the object oriented paradigm into play. The key feature here is that object definitions are <em>always</em> plain old object style. When you create a new <code>struct</code> you can only give it data properties, no methods. To add methods you need to use the <code>impl</code> keyword to define them. Similar to python, <code>self</code> is explicitly provided as the first argument to any non-static methods. </p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
@@ -181,15 +184,56 @@ impl Thing {
     fn zero(&amp;mut self) {
         self.stuff = 0;
     }
-    fn stuff(&amp;self) {
+    pub fn stuff(&amp;self) {
         self.stuff // copy
     }
     // consumes self
-    fn inner(self) {
+    fn inner(self) -&gt; u8 {
         self.stuff
     }
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>Note that in the above example we have a few flavors of the <code>self</code> keyword. First we see that <code>new</code> method returns <code>Self</code>, this means we could change the name of our struct from <code>This</code> to <code>That</code> and we don't actually have to touch this method. Because <code>new</code> takes no arguments it actually work like a static method in other languages.</p>
+<p>Next we have <code>inc</code> and <code>dec</code> which both take <code>&amp;mut self</code> (a mutable reference to self) as their first argument, this allows them to modify the internal contents of <code>self</code>. <code>zero</code> has the same version of <code>self</code> but doesn't have the <code>pub</code> keyword, which makes it private. <code>stuff</code> takes an immutable reference to self, which means we can't change it but we could copy the inner <code>u8</code> as the return value. Lastly <code>inner</code> takes self by value, that means it actually has moved from the call site into this function and at the end of it <code>self</code> will be consumed. </p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">#fn main() {
+#struct Thing {
+#    stuff: u8,
+#}
+#
+#impl Thing {
+#    pub fn new() -&gt; Self {
+#        Self {
+#            stuff: 0,
+#        }
+#    }
+#    pub fn increment(&amp;mut self) {
+#        self.stuff += 1;
+#    }
+#    pub fn decrement(&amp;mut self) {
+#        self.stuff -= 1;
+#    }
+#    // private
+#    fn zero(&amp;mut self) {
+#        self.stuff = 0;
+#    }
+#    pub fn stuff(&amp;self) {
+#        self.stuff // copy
+#    }
+#    // consumes self
+#    fn inner(self) -&gt; u8 {
+#        self.stuff
+#    }
+#}
+let mut thing = Thing::new();
+thing.inc();
+thing.dec();
+// can't call thing.zero();
+println!(&quot;{}&quot;, thing.stuff());
+println!(&quot;{}&quot;, thing.inner()); // Thing dies here
+#}
+</code></pre></pre>
 <!--notes
 Object Oriented (sort of)
 - Structs are Plain Old Objects

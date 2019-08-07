@@ -158,6 +158,12 @@
 }
 </style>
 <h1><a class="header" href="#cargo" id="cargo">Cargo</a></h1>
+<!--web-only-->
+<p>Next up is cargo, every rust developer's best friend, this tool will do a the heaving lifting when if comes to working with rust. First it can be used to boot strap you a new project by using the <code>cargo new [folder-name]</code> and <code>cargo init</code> commands. It will also run all of your <code>#[test]</code>s that we talked about before using the <code>cargo test</code> command. You can also use <code>cargo build</code> to compiler your program into the <code>targets</code> folder or <code>cargo run</code> to both compile it and run it. For validating your program works correctly you can use the <code>cargo check</code> which will work faster that <code>cargo build</code>. Lastly, you can use <code>cargo install</code> to install new command line tools for example <code>cargo install mdbook</code> would install the static site generate used to write this site.</p>
+<p>It also helps you manage your dependencies, in a Cargo.toml file in your project's root you will be able to list any packages that exist on <a href="https://crates.io">crates.io</a> (which are referred to as &quot;crates&quot; because of puns). When you compile or run your program with cargo it will download and install those packages on your system locally and set them up to be included in your program.</p>
+<p>so, in short, it works a lot like npm but for rust.</p>
+<!--web-only-end-->
+<!--slides-only-->
 <p>The package manager and test runner and binary installer and build pipeline runner for most rust programs.</p>
 <ul>
 <li><code>cargo new</code></li>
@@ -168,6 +174,7 @@
 <li><code>cargo install mdbook</code></li>
 </ul>
 <p><a href="https://crates.io">Crates.io</a></p>
+<!--slides-only-end-->
 <!--notes
 Cargo
 - Like NPM for "crates"

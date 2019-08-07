@@ -158,6 +158,9 @@
 }
 </style>
 <h1><a class="header" href="#std-types" id="std-types">Std Types</a></h1>
+<!--web-only-->
+<p>There are a few types provided by rust that that can be confusing when getting started. The first one we covered which is the <code>Result</code> type.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#result" id="result"><code>Result</code></a></h2>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -167,6 +170,10 @@ enum Result&lt;T, E&gt; {
     Err(E)
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>The above is what the definition of the result type actually looks like. It really is just an enum with two cases, however there are a few things the compiler does that make it a little more special (like warning on unused).</p>
+<p>Next is the <code>Option</code> type, this is the way we can work with data that could be unavailable. Like result it has two cases but instead of ok and error they are Some and None, where Some has data and None does not.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#option" id="option"><code>Option</code></a></h2>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
@@ -176,26 +183,75 @@ enum Option&lt;T&gt; {
     None,
 }
 #}</code></pre></pre>
+<!--web-only-->
+<p>There are a number of really nice features surrounding this type just like there is for Result, but in the end it is also just an enum defined like the above code block.</p>
+<!--web-only-end-->
 <h2><a class="header" href="#string-vs-str" id="string-vs-str"><code>String</code> vs <code>&amp;str</code></a></h2>
+<!--slides-only-->
 <ul>
 <li><code>String</code>: Heap allocated growable buffer</li>
 <li><code>&amp;str</code>: Reference to fixed size buffer</li>
 </ul>
+<!--web-only-->
+<p>The next type to cover is strings. In rust there are two different types of strings which can get a little confusing but they are there for good reason. First is the <code>String</code> type, this is the growable string which will always be heap allocated (if that matters to you). The other type is <code>str</code> or a string slice, this is always used as a reference either to a static string or to a <code>String</code>. If you are familiar with the <code>StringBuilder</code> in C#, <code>String</code> fills a similar role.</p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let mut string = String::new();
+    string.push('a');
+    string.push('b');
+    string.push('c');
+    string.push_str(&quot;def&quot;);
+    println!(&quot;String: {}&quot;, string);
+    let fixed: &amp;str = &quot;abcdef&quot;; // static string;
+    println!(&quot;fixed: {}&quot;, fixed);
+    let other: &amp;str = &amp;string[1..3]; // slice of `string`
+    println!(&quot;other: {}&quot;, other);
+}
+</code></pre></pre>
 <h2><a class="header" href="#vect-vs-t-n" id="vect-vs-t-n"><code>Vec&lt;T&gt;</code> vs <code>[T; N]</code></a></h2>
+<!--slides-only-->
 <ul>
 <li><code>Vec</code>: Growable array (ArrayList/List)</li>
 <li><code>[T; N]</code>: Fixed size array</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>Similar to <code>String</code> and <code>str</code>, <code>Vec</code> is the growable collection type while <code>[T; N]</code> is the fixed size array. </p>
+<!--web-only-end-->
+<pre><pre class="playpen"><code class="language-rust">fn main() {
+    let mut v: Vec&lt;usize&gt; = Vec::new();
+    v.push(1);
+    v.push(2);
+    v.push(3);
+    println!(&quot;Vec: {:?}&quot;, v);
+    let mut arr: [usize; 3] = [0;3];
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[3] = 3;
+    println!(&quot;arr: {:?}&quot;, arr);
+}
+</code></pre></pre>
 <h2><a class="header" href="#boxt" id="boxt"><code>Box&lt;T&gt;</code></a></h2>
+<!--slides-only-->
 <ul>
 <li>Heap allocated pointer</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>The default for types is that they will be stack allocated, that means that sometimes it can be tough to get a type to live for longer than any given function. This is where the <code>Box</code> type comes it, this type explicitly puts your data on the heap but if you don't much care about that that's ok too because you can actually use a boxed version of data just like an unboxed version.</p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">#fn main() {
 let n = 100;
 let heap_n = Box::new(n);
+if heap_n &gt; 10 {
+    println!(&quot;big!&quot;);
+}
 #}
 </code></pre></pre>
 <h2><a class="header" href="#numbers" id="numbers">Numbers</a></h2>
+<!--web-only-->
+<p>There are quite a few number types in rust, the full list is below. Most of these are pretty self explanatory, each is prefixed with either i, u or f (integer, unsigned-integer, or float) and then the size of that number. So <code>i8</code> can only go up to 127 while u8 can go up to 255 but not below 0. The only slightly confusing ones are <code>isize</code> and <code>usize</code> which will always corrispond to the computer you compiled it for (isize on a 64bit system is i64 but on a 32 bit system is i32).</p>
+<!--web-only-end-->
 <ul>
 <li><code>u8</code></li>
 <li><code>i8</code></li>
@@ -213,11 +269,19 @@ let heap_n = Box::new(n);
 <li><code>isize</code></li>
 </ul>
 <h2><a class="header" href="#tuples" id="tuples">Tuples</a></h2>
+<!--slides-only-->
 <ul>
 <li>First class data type</li>
 </ul>
+<!--slides-only-end-->
+<!--web-only-->
+<p>Tuples are a slightly looser data type, you can think of them like a fixed size collection of possibly different types. Their primary use is for returning multiple pieces of data from one function. One of the nice things about them is that they can be used to easily de-structure some return value, the below example the variables x and y are initialized to the respective numbers from <code>get_tuple</code>. If you don't want to destructure you can access the inner values with dot and then the index of the value you want.</p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">#fn main() {
 let (x, y) = get_tuple();
+let pair = get_tuple();
+println!(&quot;x: {}, pair.0: {}&quot;, x, pair.0);
+println!(&quot;y: {}, pair.1: {}&quot;, y, pair.1);
 #}
 fn get_tuple() -&gt; (u8, u8) {
     (1, 2)

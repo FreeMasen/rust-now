@@ -158,6 +158,9 @@
 }
 </style>
 <h1><a class="header" href="#error-handling" id="error-handling">Error Handling</a></h1>
+<!--web-only-->
+<p>With the power of the rust enum, it becomes easy to return a value that is <em>either</em> a success or failure. This means we don't need to lean on runtime exceptions as our only error handling option. Instead we can use the <code>Result</code> type. This is an enum provided by the standard library that has two cases, <code>Ok</code> for success and <code>Err</code> for errors. </p>
+<!--web-only-end-->
 <pre><pre class="playpen"><code class="language-rust">fn main() -&gt; Result&lt;(), String&gt; {
     // question mark to short circut
     could_fail(1)?;
@@ -180,6 +183,10 @@ fn could_fail(n: u8) -&gt; Result&lt;(), String&gt; {
 }
 
 </code></pre></pre>
+<!--web-only-->
+<p>In the above example we have a function called <code>could_fail</code> that will always fail on even numbers. Inside of our <code>main</code> function, we call <code>could_fail</code> with a few different options for error handling.</p>
+<p>The first is the <code>?</code> operator, this short circuits <code>main</code> if the call was an error. Next we have the long form pattern matching for when you really do care about what to do on an error. Third we have a call that just ignores there is even a return value, this will cause the compiler to warn you about this and lastly we return the result of the call to <code>can_fail</code>. Overall this creates a great error handing experience, first you will always know if the functions you are calling can fail. In the event you want to ignore that fact, you can always just short circuit or even ignore the error case.</p>
+<!--web-only-end-->
 <!--notes
 Error Handling
 - Enums + Pattern matching = beautiful error handling

@@ -159,6 +159,8 @@
 </style>
 <h1><a class="header" href="#traits" id="traits">Traits</a></h1>
 <!--web-only-->
+<p>Traits are Rust's primary tool for dynamism. A trait can be defined and then implemented by a large number of types. Trait names can be used in place of type names to allow for that dynamic behavior. Conceptually they are very similar to interfaces however they can only define behavior, not data.</p>
+<p>There are two ways to work with traits, first is that you can implement traits defined by <em>others</em> for your types. In this example we are implementing the standard library trait <code>Display</code> for our <code>Message</code> enum from before. The <code>Display</code> trait exposes 1 method, <code>fmt</code> which takes a reference to the implementor and a formatter, it then expects a return value of a <code>std::fmt::Result</code> which is what <code>write!</code> returns.</p>
 <!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#implement-other-traits-for-your-type" id="implement-other-traits-for-your-type">Implement other traits for your type</a></h3>
@@ -228,6 +230,10 @@ fn main() {
     }
 }
 </code></pre></pre>
+<!--web-only-->
+<p>With this defined we now can just pass any <code>Message</code> to <code>println!</code> using the <code>{}</code> syntax to have it call our <code>fmt</code> method.</p>
+<p>The other way to work with types is to define your own types which can be implemented for anyone else's types. In th next example, we have defined a trait called <code>Firstable</code> which allows us to get a reference to something returned by <code>first</code>. Below, it is implemented for two types of rust collections, Vectors and Arrays.</p>
+<!--web-only-end-->
 <!--slides-only-->
 <h3><a class="header" href="#implement-your-traits-for-other-types" id="implement-your-traits-for-other-types">Implement your traits for other types</a></h3>
 <!--slides-only-end-->

@@ -166,8 +166,8 @@
 <!--slides-only-end-->
 <pre><pre class="playpen"><code class="language-rust">fn main() {
     let mut x = 1;
-    let y = &amp;mut x;
     {
+        let y = &amp;mut x;
        *y += 1;
     }
     println!(&quot;{}&quot;, x);

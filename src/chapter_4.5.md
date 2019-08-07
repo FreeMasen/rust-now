@@ -1,6 +1,8 @@
 # Traits
 $web-only$
+Traits are Rust's primary tool for dynamism. A trait can be defined and then implemented by a large number of types. Trait names can be used in place of type names to allow for that dynamic behavior. Conceptually they are very similar to interfaces however they can only define behavior, not data.
 
+There are two ways to work with traits, first is that you can implement traits defined by *others* for your types. In this example we are implementing the standard library trait `Display` for our `Message` enum from before. The `Display` trait exposes 1 method, `fmt` which takes a reference to the implementor and a formatter, it then expects a return value of a `std::fmt::Result` which is what `write!` returns.
 $web-only-end$
 $slides-only$
 ### Implement other traits for your type
@@ -71,7 +73,11 @@ fn main() {
     }
 }
 ```
+$web-only$
+With this defined we now can just pass any `Message` to `println!` using the `{}` syntax to have it call our `fmt` method.
 
+The other way to work with types is to define your own types which can be implemented for anyone else's types. In th next example, we have defined a trait called `Firstable` which allows us to get a reference to something returned by `first`. Below, it is implemented for two types of rust collections, Vectors and Arrays.
+$web-only-end$
 $slides-only$
 ### Implement your traits for other types
 $slides-only-end$
